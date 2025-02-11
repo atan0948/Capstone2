@@ -25,13 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const searchButton = document.querySelector('.search-bar button');
-    if (searchButton) {  // Check if the button exists before adding listener
+    if (searchButton) {  
       searchButton.addEventListener('click', searchTable);
     }
 
 
     const searchInput = document.querySelector('.search-bar input');
-    if (searchInput) { // Check if the input exists before adding listener
+    if (searchInput) { 
       searchInput.addEventListener('keyup', function(event) {
           if (event.key === 'Enter') {
               searchTable();
@@ -44,21 +44,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //Picture in login Script
 setInterval(() => {
-    productImage.src = imageArray[currentImageIndex]; // Change image source
+    productImage.src = imageArray[currentImageIndex]; 
 
     currentImageIndex++; // Increment index
     if (currentImageIndex >= imageArray.length) {
-        currentImageIndex = 0; // Reset index to 0 when it exceeds array length
+        currentImageIndex = 0; 
     }
-}, 3000); // Change image every 3 seconds (adjust as needed)
+}, 3000); 
 
 
-// Pagination (Optional - If you want the dots to update too)
 const dots = document.querySelectorAll('.dot');
 
 setInterval(() => {
-    // Remove active class from all dots
     dots.forEach(dot => dot.classList.remove('active'));
-    // Add active class to the current dot
     dots[currentImageIndex].classList.add('active');
-}, 3000); // Same interval as image change
+}, 3000); 
+
+
+// login form Script
+const loginForm = document.getElementById('loginForm');
+
+// Handle the form submission
+loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent the page from reloading
+
+    // Get the input values
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        // Send a POST request to the backend login API
+        const response = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // If login is successful
+            alert('Login successful! Token: ' + result.token);
+            // Optionally, save the token in local storage for future use
+            localStorage.setItem('token', result.token);
+        } else {
+            // If login failed, show the error message
+            document.getElementById('error').textContent = result.error;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('error').textContent = 'An error occurred. Please try again.';
+    }
+});
