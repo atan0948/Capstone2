@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaerinz Garments Automation System</title>
+    <link rel="stylesheet" href="system.css">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="logo.png" alt="Yaerinz Garments Logo">  <h2>Yaerinz Garments</h2>
+                <p>Automation System</p>
+            </div>
+            <ul class="nav">
+                <li><a href="index.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="inventory.html"><i class="fas fa-box"></i> Inventory</a></li>
+                <li><a href="record-management.html"><i class="fas fa-folder"></i> Record Management</a></li>
+                <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li> 
+            </ul>
+            <div class="logout">
+                <a href="#">Log Out</a>
+            </div>
+        </aside>
+        <main class="content">
+            <header>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search Here">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </header>
+            <section class="overview">
+                <h2>Overview</h2>
+                <div class="metrics">
+                    <div class="metric">
+                        <p>Production Efficiency</p>
+                        <p class="value">100% Efficiency</p>
+                    </div>
+                    <div class="metric">
+                        <p>Current Inventory</p>
+                        <p class="value">1 Units</p>
+                    </div>
+                    <div class="metric">
+                        <p>Defect Rate</p>
+                        <p class="value">0% Defect Rate</p>
+                    </div>
+                    <div class="metric">
+                        <p>Total Orders</p>
+                        <p class="value">1 Orders</p>
+                    </div>
+                </div>
+            </section>
+            <section class="sales">
+                <h3>Sales</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Start Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Jacket</td>
+                            <td>500.00</td>
+                            <td>18-06-2024</td>
+                            <td>Processing</td>
+                            <td><a href="#">View Details</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section class="inventory-status">
+                <h3>Inventory Status</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Itemname</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Supplier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Jacket</td>
+                            <td>500.00</td>
+                            <td>1</td>
+                            <td>My Supplier</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+     <script src="script.js"></script>
+</body>
+</html>
