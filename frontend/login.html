@@ -21,7 +21,7 @@
           
         </div>
         <div class="right-side">
-            <div class="login-form" id = "loginForm">
+            <div class="login-form" >
               <div class="brand-logo-top"> <img src="logo.png" alt="Yaerinz Logo" class="logo"> </div> 
                 <h1>YAERINZ GARMENTS</h1>
                 <h2>AUTOMATION SYSTEM</h2>
@@ -29,17 +29,17 @@
                     <h3>LOGIN</h3>
                     <p>Please login to continue to your account</p>
                 </div>
-                <form>
+                <form id="loginForm">
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input type="text" id="username" name="username">
-                    </div>
+                        <input type="text" id="username" name="username" placeholder="Username" required> </div>
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
                     </div>
                     <a href="#" class="forgot-password">Forgot Password?</a>
                     <button type="submit" class="login-button">Log In</button>
+                    <div id="error-message"></div>  
                 </form>
                 <div class="footer">
                     <p>Yaerinz <span class="garments">GARMENTS</span></p>

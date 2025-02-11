@@ -60,41 +60,46 @@ setInterval(() => {
     dots[currentImageIndex].classList.add('active');
 }, 3000); 
 
+//Login Scriptttt
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (Your existing image cycling and search code)
 
-// login form Script
-const loginForm = document.getElementById('loginForm');
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('error-message');
 
-// Handle the form submission
-loginForm.addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent the page from reloading
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); 
 
-    // Get the input values
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-    try {
-        // Send a POST request to the backend login API
-        const response = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
+        errorMessage.textContent = ""; // Clear any previous errors
 
-        const result = await response.json();
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
 
-        if (response.ok) {
-            // If login is successful
-            alert('Login successful! Token: ' + result.token);
-            // Optionally, save the token in local storage for future use
-            localStorage.setItem('token', result.token);
-        } else {
-            // If login failed, show the error message
-            document.getElementById('error').textContent = result.error;
+            const result = await response.json();
+
+            if (response.ok) {
+                // Successful login
+                console.log('Login successful!', result);
+                localStorage.setItem('token', result.token); // Store the token
+                // Redirect or update UI as needed
+                window.location.href = "index.html"; // Example: redirect to dashboard
+            } else {
+                // Login failed
+                console.error('Login failed:', result);
+                errorMessage.textContent = result.error || "Invalid username or password"; // Display error
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            errorMessage.textContent = "An error occurred. Please try again later.";
         }
-    } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('error').textContent = 'An error occurred. Please try again.';
-    }
+    });
 });
