@@ -1,67 +1,50 @@
 
-
-
-//Picture in login Script
-setInterval(() => {
-    productImage.src = imageArray[currentImageIndex]; 
-
-    currentImageIndex++; // Increment index
-    if (currentImageIndex >= imageArray.length) {
-        currentImageIndex = 0; 
-    }
-}, 3000); 
-
-
-const dots = document.querySelectorAll('.dot');
-
-setInterval(() => {
-    dots.forEach(dot => dot.classList.remove('active'));
-    dots[currentImageIndex].classList.add('active');
-}, 3000); 
-
-//Login Scriptttt
-document.addEventListener('DOMContentLoaded', () => {
-
+document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('error-message');
+    const errorElement = document.getElementById('error');
 
-    if (loginForm) { // Check if the form element exists
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Prevent page reload
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent page reload
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // Get and trim input values
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
 
-            errorMessage.textContent = ""; // Clear any previous errors
+        // Clear previous errors
+        errorElement.textContent = '';
 
-            try {
-                const response = await fetch('http://localhost:3000/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+        // Validate inputs
+        if (!username || !password) {
+            errorElement.textContent = 'Username and password are required.';
+            return;
+        }
 
-                const result = await response.json();
+        try {
+            // Send a POST request to the backend login API
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password }),
+            });
 
-                if (response.ok) {
-                    // Successful login
-                    console.log('Login successful!', result);
-                    localStorage.setItem('token', result.token); // Store the token
+            const result = await response.json();
 
-                    // Redirect to index.html
-                    window.location.href = "index.html";  // Correct path!
+            if (response.ok) {
+                alert('Login successful!');
+                localStorage.setItem('token', result.token);
 
-                } else {
-                    // Login failed
-                    console.error('Login failed:', result);
-                    errorMessage.textContent = result.error || "Invalid username or password"; // Display error
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                errorMessage.textContent = "An error occurred. Please try again later.";
+                // Redirect to dashboard or another page
+                window.location.href = 'index.html';
+            } else {
+                errorElement.textContent = result.error || 'Invalid login credentials.';
             }
-        });
-    } else {
-        console.error("Login form element not found.");
-    }
+        } catch (error) {
+            console.error('Login error:', error);
+            errorElement.textContent = 'An error occurred. Please try again.';
+        }
+    });
+
+    // Remove error message when the user starts typing
+    document.getElementById('username').addEventListener('input', () => errorElement.textContent = '');
+    document.getElementById('password').addEventListener('input', () => errorElement.textContent = '');
 });

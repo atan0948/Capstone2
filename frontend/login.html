@@ -8,39 +8,50 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    
 </head>
 <body>
     <div class="container">
+        <!-- Left Side (Image Slider) -->
         <div class="left-side">
-            <img src="prod1.png" alt="Product Image" class="model-image" id="productImage">  <div class="pagination">
+            <img src="prod1.png" alt="Product Image" class="model-image" id="productImage">
+            <div class="pagination">
                 <div class="dot active"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
             </div>
-          
         </div>
+
+        <!-- Right Side (Login Form) -->
         <div class="right-side">
-            <div class="login-form" >
-              <div class="brand-logo-top"> <img src="logo.png" alt="Yaerinz Logo" class="logo"> </div> 
+            <div class="login-form">
+                <div class="brand-logo-top">
+                    <img src="logo.png" alt="Yaerinz Logo" class="logo">
+                </div> 
                 <h1>YAERINZ GARMENTS</h1>
                 <h2>AUTOMATION SYSTEM</h2>
                 <div class="login-header">
                     <h3>LOGIN</h3>
                     <p>Please login to continue to your account</p>
                 </div>
+
+                <!-- Corrected form placement with error message -->
                 <form id="loginForm">
                     <div class="input-group">
                         <label for="username">Username</label>
-                        <input type="text" id="username" name="username" placeholder="Username" required> </div>
+                        <input type="text" id="username" name="username" autocomplete="off">
+                    </div>
                     <div class="input-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <input type="password" id="password" name="password" autocomplete="off">
                     </div>
+                    
+                    <!-- Error message element -->
+                    <p id="error" style="color: red;"></p>
+                    
                     <a href="#" class="forgot-password">Forgot Password?</a>
                     <button type="submit" class="login-button">Log In</button>
-                    <div id="error-message"></div>  
                 </form>
+
                 <div class="footer">
                     <p>Yaerinz <span class="garments">GARMENTS</span></p>
                 </div>
@@ -48,5 +59,6 @@
         </div>
     </div>
     <script src="script.js"></script>
+    
 </body>
 </html>

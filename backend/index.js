@@ -24,3 +24,13 @@ app.use('/api', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+const verifyToken = require('./authmiddleware'); // Import middleware
+
+const router = express.Router();
+
+router.get('/api/protected', verifyToken, (req, res) => {
+    res.json({ message: "Welcome to the protected route!", user: req.user });
+});
+
+module.exports = router;
