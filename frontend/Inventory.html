@@ -22,7 +22,7 @@
                 <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li> 
             </ul>
             <div class="logout">
-                <a href="#">Log Out</a>
+                <button id="logout">Log Out</button>
             </div>
         </aside>
         <main class="content">
@@ -44,30 +44,43 @@
                             <th>Quantity</th>
                             <th>Price</th>
                             <th>Supplier</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>T-Shirt</td>
-                            <td>150</td>
-                            <td>15.00</td>
-                            <td>Acme Clothing</td>
-                        </tr>
-                        <tr>
-                            <td>002</td>
-                            <td>Jeans</td>
-                            <td>100</td>
-                            <td>35.00</td>
-                            <td>Blue Denim Co.</td>
-                        </tr>
-                        </tbody>
+                    <tbody id="inventoryTableBody">
+                        <!-- Data will be loaded here -->
+                    </tbody>
                 </table>
+                <h2>Add New Garment</h2>
+<form id="addGarmentForm">
+    <input type="text" id="item_name" placeholder="Item Name" required>
+    <input type="number" id="quantity" placeholder="Quantity" required>
+    <input type="number" step="0.01" id="price" placeholder="Price" required>
+    <input type="text" id="supplier" placeholder="Supplier" required>
+    <button type="submit" id="submitButton">Add Garment</button>
+</form>
+<p id="addError" style="color: red;"></p>
+
+<!-- edit garment -->
+<form id="editGarmentForm" style="display: none;">
+    <input type="hidden" id="edit_id">
+    <input type="text" id="edit_item_name" placeholder="Item Name" required>
+    <input type="number" id="edit_quantity" placeholder="Quantity" required>
+    <input type="number" step="0.01" id="edit_price" placeholder="Price" required>
+    <input type="text" id="edit_supplier" placeholder="Supplier" required>
+    <button type="submit">Update Garment</button>
+    <button type="button" onclick="cancelEdit()">Cancel</button>
+</form>
+<p id="editError" style="color: red;"></p>
+
+
 
             </section>
             
         </main>
     </div>
      <script src="script.js"></script>
+     <script src="dashboard.js"></script>
+     <script src="inventory.js"></script>
 </body>
 </html>
