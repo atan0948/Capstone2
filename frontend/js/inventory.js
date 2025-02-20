@@ -48,31 +48,46 @@ async function fetchGarments() {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
         const garments = await response.json();
-
-        const tableBody = document.getElementById('inventoryTableBody');
-        tableBody.innerHTML = ''; // Clear previous data
-
-        garments.forEach(garment => {
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${garment.id}</td>
-                <td>${garment.item_name}</td>
-                <td>${garment.quantity}</td>
-                <td>$${garment.price}</td>
-                <td>${garment.supplier}</td>
-                <td>
-                    <button onclick="editGarment(${garment.id}, '${garment.item_name}', ${garment.quantity}, ${garment.price}, '${garment.supplier}')">Edit</button>
-                    <button onclick="deleteGarment(${garment.id})">Delete</button>
-                </td>
-            `;
-
-            tableBody.appendChild(row);
-        });
+        displayGarments(garments); // Use helper function
     } catch (error) {
         console.error('Error fetching inventory:', error);
     }
 }
+
+// Helper function to display garments (with search & filter support)
+function displayGarments(garments) {
+    const tableBody = document.getElementById('inventoryTableBody');
+    tableBody.innerHTML = ''; // Clear previous data
+
+    // Get search and filter values
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const filterSupplier = document.getElementById('filterSupplier').value.toLowerCase();
+
+    const filteredGarments = garments.filter(garment => 
+        garment.item_name.toLowerCase().includes(searchValue) && 
+        (filterSupplier === '' || garment.supplier.toLowerCase() === filterSupplier)
+    );
+
+    filteredGarments.forEach(garment => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${garment.id}</td>
+            <td>${garment.item_name}</td>
+            <td>${garment.quantity}</td>
+            <td>$${garment.price}</td>
+            <td>${garment.supplier}</td>
+            <td>
+                <button onclick="editGarment(${garment.id}, '${garment.item_name}', ${garment.quantity}, ${garment.price}, '${garment.supplier}')">Edit</button>
+                <button onclick="deleteGarment(${garment.id})">Delete</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+// Search & Filter Event Listeners
+document.getElementById('searchInput').addEventListener('input', fetchGarments);
+document.getElementById('filterSupplier').addEventListener('change', fetchGarments);
 
 // Edit Garment
 function editGarment(id, item_name, quantity, price, supplier) {
@@ -81,10 +96,7 @@ function editGarment(id, item_name, quantity, price, supplier) {
     document.getElementById('price').value = price;
     document.getElementById('supplier').value = supplier;
     
-    // Store the ID in the form's dataset
     document.getElementById('addGarmentForm').dataset.editingId = id;
-
-    // Change button text to indicate edit mode
     document.getElementById('submitButton').textContent = "Update Garment";
 }
 
