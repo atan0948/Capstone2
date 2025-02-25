@@ -19,7 +19,7 @@ body {
 
 .left-side {
     width: 50%;
-    background-color: #e0e0e0;
+    aspect-ratio: 1 / 1; /* Makes it a square */
     position: relative;
     overflow: hidden;
 }
@@ -58,28 +58,24 @@ body {
     right: 20px;
 }
 
-.logo,   
-.logo.top { 
-    width: 250px;      
-    height: auto;     
+.logo,
+.logo.top {
+    width: 250px;
+    height: auto;
     display: block;
     margin: 0 auto;
 }
 
-
 @media (max-width: 768px) {
     .logo,
     .logo.top {
-        width: 200px; 
+        width: 200px;
     }
- 
 }
-
-
 
 .right-side {
     width: 50%;
-    padding: 20px; /* Reduced padding for mobile */
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -92,7 +88,7 @@ body {
     margin-bottom: 20px;
 }
 
-.logo.top { /* Specific style for the top logo */
+.logo.top {
     width: 250px;
     height: auto;
     display: block;
@@ -160,31 +156,29 @@ input[type="password"] {
     font-weight: bold;
 }
 
-
-/* Media Query for Responsiveness */
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stack elements vertically */
-        width: 95%; /* Take up more of the screen width */
-        margin: 10px auto; /* Center the container */
+        flex-direction: column;
+        width: 95%;
+        margin: 10px auto;
     }
 
     .left-side,
     .right-side {
-        width: 100%; /* Each takes full width */
-        padding: 15px; /* Reduce padding */
+        width: 100%;
+        padding: 15px;
     }
 
     .model-image {
-        height: 300px; /* Fixed height for mobile */
+        height: 300px;
     }
 
     .logo.top {
-        width: 200px; /* Adjust logo size for mobile */
+        width: 200px;
     }
 
     h1 {
-        font-size: 1.5em; /* Scale down headings */
+        font-size: 1.5em;
     }
 
     h2 {
@@ -192,16 +186,16 @@ input[type="password"] {
     }
 
     .input-group {
-        margin-bottom: 10px; /* Reduce spacing between form elements */
+        margin-bottom: 10px;
     }
 
     .login-button {
-        padding: 8px 15px; /* Adjust button padding */
-        font-size: 0.9em; /* Adjust button font size */
+        padding: 8px 15px;
+        font-size: 0.9em;
     }
 
     .footer {
-        margin-top: 20px; /* Adjust footer margin */
-        font-size: 0.8em; /* Adjust footer font size */
+        margin-top: 20px;
+        font-size: 0.8em;
     }
 }
