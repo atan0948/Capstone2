@@ -366,3 +366,95 @@ th {
         flex-direction: column;
     }
 }
+
+
+/* Add New Garment Form Styles */
+#addGarmentForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#addGarmentForm input[type="text"],
+#addGarmentForm input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex: 1 1 200px; /* Allow inputs to grow and shrink */
+}
+
+#addGarmentForm input[type="number"] {
+    width: 80px; /* Adjust width for number inputs */
+}
+
+#addGarmentForm button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1 1 150px; /* Allow button to grow and shrink */
+}
+
+#addGarmentForm button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#addError {
+    margin-top: 10px;
+}
+
+/* Edit Garment Form Styles */
+#editGarmentForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#editGarmentForm input[type="text"],
+#editGarmentForm input[type="number"] {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex: 1 1 200px;
+}
+
+#editGarmentForm input[type="number"] {
+    width: 80px;
+}
+
+#editGarmentForm button[type="submit"],
+#editGarmentForm button[type="button"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 1 1 150px;
+}
+
+#editGarmentForm button[type="submit"]:hover,
+#editGarmentForm button[type="button"]:hover {
+    background-color: #218838;
+}
+
+#editError {
+    margin-top: 10px;
+}
+
+/* Supplier Filter Styles */
+#searchInput,
+#filterSupplier {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-right: 10px;
+}
