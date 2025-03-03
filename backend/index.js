@@ -2,9 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authroutes');
-const garmentsRoutes = require('./routes/garmentroutes'); // Import the garments route
-const verifyToken = require('./authmiddleware'); // Import auth middleware
-const db = require('./database/db'); // Import your database connection
+const garmentsRoutes = require('./routes/garmentroutes');
+const verifyToken = require('./authmiddleware');
+const db = require('./database/db');
 
 dotenv.config();
 const app = express();
@@ -24,7 +24,7 @@ app.use('/api', authRoutes);
 // ✅ Use garments routes
 app.use('/api/garments', garmentsRoutes);
 
-// ✅ Protected route example (using middleware)
+// ✅ Protected route(using middleware)
 app.get('/api/protected', verifyToken, (req, res) => {
     res.json({ message: "Welcome to the protected route!", user: req.user });
 });
