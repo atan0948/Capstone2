@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authroutes');
 const garmentsRoutes = require('./routes/garmentroutes');
+const salesRoutes = require('./routes/sales');
 const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 
@@ -23,6 +24,9 @@ app.use('/api', authRoutes);
 
 // ✅ Use garments routes
 app.use('/api/garments', garmentsRoutes);
+
+// sales
+app.use('/api', salesRoutes);
 
 // ✅ Protected route(using middleware)
 app.get('/api/protected', verifyToken, (req, res) => {

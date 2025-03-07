@@ -74,7 +74,7 @@ function displayGarments(garments) {
             <td>${garment.id}</td>
             <td>${garment.item_name}</td>
             <td>${garment.quantity}</td>
-            <td>$${garment.price}</td>
+            <td>₱${garment.price}</td>
             <td>${garment.supplier}</td>
             <td>
                 <button onclick="editGarment(${garment.id}, '${garment.item_name}', ${garment.quantity}, ${garment.price}, '${garment.supplier}')">Edit</button>
