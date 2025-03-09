@@ -123,3 +123,17 @@ async function deleteGarment(id) {
 
 // Fetch data when the page loads
 document.addEventListener('DOMContentLoaded', fetchGarments);
+
+//Add columns sa table lang ah parang design natahanael dont mind this hahahaha
+function addEmptyRows(tableBody, numRows) {
+    for (let i = 0; i < numRows; i++) {
+        let row = tableBody.insertRow();
+        for (let j = 0; j < 6; j++) { 
+            row.insertCell();
+        }
+    }
+}
+
+const tableBody = document.getElementById('inventoryTableBody');
+
+addEmptyRows(tableBody,10);

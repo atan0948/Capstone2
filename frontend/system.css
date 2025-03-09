@@ -1,10 +1,10 @@
-
 body {
     font-family: sans-serif;
     margin: 0;
     background-color: #f4f4f4;
     display: flex; 
-    min-height: 100vh; 
+    min-height: 100vh;
+    overflow: hidden; 
 }
 
 .container {
@@ -13,34 +13,16 @@ body {
     min-height: 100vh; 
 }
 
-.nav li {
-    margin-bottom: 10px; 
-}
-
-.nav li a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #333;
-    border-radius: 5px; 
-    transition: background-color 0.3s, color 0.3s; 
-}
-
-.logout {
-    margin-top: auto; 
-    text-align: center;  
-    padding-bottom: 20px; 
-}
-
 .sidebar {
-    display: flex;           
-    flex-direction: column;   
+    display: flex;    
+    flex-direction: column; 
     width: 250px;
     background-color: #fff;
-    padding: 20px;
+    padding: 20px; 
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     height: 100%;
 }
+
 
 .logo {
     text-align: center;
@@ -58,11 +40,17 @@ body {
     padding: 0;
 }
 
+.nav li {
+    margin-bottom: 10px; 
+}
+
 .nav li a {
     display: block;
     padding: 10px;
     text-decoration: none;
-    color: #333; 
+    color: #333;
+    border-radius: 5px; 
+    transition: background-color 0.3s, color 0.3s; 
 }
 
 .nav li a:hover, .nav li a.active {
@@ -74,8 +62,9 @@ body {
 }
 
 .logout {
-    margin-top: 30px;
-    text-align: center;
+    margin-top: auto; /* Push logout to bottom */
+    text-align: center;  
+    padding-bottom: 80px; 
 }
 
 .logout a {
@@ -86,6 +75,7 @@ body {
 .content {
     flex: 1;
     padding: 20px;
+    
 }
 
 header {
@@ -96,9 +86,11 @@ header {
 
 .search-bar {
     display: flex;
+    
 }
 
 .search-bar input {
+    width: 350px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px; 
@@ -163,298 +155,8 @@ th {
     background-color: #eee;
 }
 
-
 @media (max-width: 768px) {
     .metrics {
         flex-direction: column; 
     }
-}
-
-/* Dashboard.css */
-body {
-    font-family: sans-serif;
-    margin: 0;
-    background-color: #f4f4f4;
-    display: flex;
-    min-height: 100vh;
-}
-
-.container {
-    display: flex;
-    width: 100%;
-    min-height: 100vh;
-}
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    width: 250px;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    height: 100%;
-}
-
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.logo img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-.nav {
-    list-style: none;
-    padding: 0;
-}
-
-.nav li {
-    margin-bottom: 10px;
-}
-
-.nav li a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-    color: #333;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.nav li a:hover, .nav li a.active {
-    background-color: #eee;
-}
-
-.nav li a i {
-    margin-right: 10px;
-}
-
-.logout {
-    margin-top: auto;
-    text-align: center;
-    padding-bottom: 20px;
-}
-
-.logout a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-}
-
-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
-}
-
-.search-bar {
-    display: flex;
-}
-
-.search-bar input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-}
-
-.search-bar button {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 0 4px 4px 0;
-    background-color: #eee;
-    cursor: pointer;
-}
-
-.overview {
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-}
-
-.metrics {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.metric {
-    text-align: center;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    flex: 1 1 200px;
-    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-}
-
-.metric .value {
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-top: 10px;
-}
-
-.sales {
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    background-color: #eee;
-}
-
-
-.add-item {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #fff;
-    margin-bottom: 20px; 
-}
-
-.add-item label {
-    display: block; 
-    margin-bottom: 5px;
-}
-
-.add-item input,
-.add-item select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box; 
-}
-
-.add-item button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.add-item button:hover {
-    background-color: #0056b3;
-}
-
-
-@media (max-width: 768px) {
-    .metrics {
-        flex-direction: column;
-    }
-}
-
-
-/* Add New Garment Form Styles */
-#addGarmentForm {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-#addGarmentForm input[type="text"],
-#addGarmentForm input[type="number"] {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    flex: 1 1 200px; /* Allow inputs to grow and shrink */
-}
-
-#addGarmentForm input[type="number"] {
-    width: 80px; /* Adjust width for number inputs */
-}
-
-#addGarmentForm button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1 1 150px; /* Allow button to grow and shrink */
-}
-
-#addGarmentForm button[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
-#addError {
-    margin-top: 10px;
-}
-
-/* Edit Garment Form Styles */
-#editGarmentForm {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-#editGarmentForm input[type="text"],
-#editGarmentForm input[type="number"] {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    flex: 1 1 200px;
-}
-
-#editGarmentForm input[type="number"] {
-    width: 80px;
-}
-
-#editGarmentForm button[type="submit"],
-#editGarmentForm button[type="button"] {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    flex: 1 1 150px;
-}
-
-#editGarmentForm button[type="submit"]:hover,
-#editGarmentForm button[type="button"]:hover {
-    background-color: #218838;
-}
-
-#editError {
-    margin-top: 10px;
-}
-
-/* Supplier Filter Styles */
-#searchInput,
-#filterSupplier {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 20px;
-    margin-right: 10px;
 }

@@ -4,14 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yaerinz Garments - Inventory</title>
-    <link rel="stylesheet" href="system.css">  
+    <link rel="stylesheet" href="system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+       
+        .page-content {
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .inventory-table, .add-new-garment {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .inventory-table {
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        td:empty {
+            height: 20px;
+            background-color: #f9f9f9;
+        }
+
+
+        #addGarmentForm, #editGarmentForm {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #addGarmentForm input[type="text"],
+        #addGarmentForm input[type="number"],
+        #editGarmentForm input[type="text"],
+        #editGarmentForm input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            flex: 1 1 100%; 
+            width: 100%;
+            max-height: fit-content;
+        }
+
+        #addGarmentForm input[type="number"],
+        #editGarmentForm input[type="number"] {
+            width: auto;
+        }
+
+        #addGarmentForm button[type="submit"],
+        #editGarmentForm button[type="submit"],
+        #editGarmentForm button[type="button"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1 1 100%;
+            max-height: fit-content;
+            width: 150px;
+        }
+
+        #addGarmentForm button[type="submit"]:hover,
+        #editGarmentForm button[type="submit"]:hover,
+        #editGarmentForm button[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        #addError, #editError {
+            margin-top: 10px;
+            color: red;
+        }
+
+        #searchInput, #filterSupplier {
+            padding: 8px 12px;
+            
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 20px;
+            width: 100%; /* Full width on small screens */
+        }
+
+        @media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+    }
+
+    .page-content {
+        flex-direction: row;
+    }
+
+    .inventory-table, .add-new-garment {
+        width: 50%;
+    }
+
+    .inventory-table {
+        padding-right: 20px;
+        width: 70%; /* Make the table wider */
+    }
+
+    .add-new-garment {
+        padding-left: 20px;
+        border-left: 1px solid #ccc;
+        width: 30%; /* Make the form narrower */
+    }
+
+    #addGarmentForm input[type="text"],
+    #addGarmentForm input[type="number"],
+    #editGarmentForm input[type="text"],
+    #editGarmentForm input[type="number"] {
+        flex: 1 1 200px;
+    }
+
+    #addGarmentForm button[type="submit"],
+    #editGarmentForm button[type="submit"],
+    #editGarmentForm button[type="button"] {
+        lex: 1 1 150px;
+    }
+        }
+        .search-filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center; 
+        }
+
+        #searchInput {
+            flex: 2; /* Search bar takes twice the space */
+        }
+
+        #filterSupplier {
+            flex: 1; /* Dropdown takes the remaining space */
+        }    
+    </style>
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
-                <img src="Images/Logo.png" alt="Yaerinz Garments Logo">  
+                <img src="Images/Logo.png" alt="Yaerinz Garments Logo">
                 <h2>Yaerinz Garments</h2>
                 <p>Automation System</p>
             </div>
@@ -19,10 +170,10 @@
                 <li><a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
                 <li><a href="inventory.html" class="active"><i class="fas fa-box"></i> Inventory</a></li>
                 <li><a href="record-management.html"><i class="fas fa-folder"></i> Record Management</a></li>
-                <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li> 
+                <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li>
             </ul>
             <div class="logout">
-                <button id="logout">Log Out</button>
+                <label id ="logout">Log Out</label>
             </div>
         </aside>
         <main class="content">
@@ -33,62 +184,59 @@
                 </div>
             </header>
             <section class="page-content">
-                <h2>Inventory</h2>
-                
+                <div class="inventory-table">
+                    <h2>Inventory</h2>
+                    <div class="search-filter-container">
+                        <input type="text" id="searchInput" placeholder="Search by item name">
+                        <select id="filterSupplier">
+                            <option value="">All Suppliers</option>
+                            <option value="Supplier A">Supplier A</option>
+                            <option value="Supplier B">Supplier B</option>
+                            <option value="Supplier C">Supplier C</option>
+                        </select>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Supplier</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            </tbody>
+                    </table>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Item Name</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Supplier</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventoryTableBody">
-                        <!-- Data will be loaded here -->
-                    </tbody>
-                </table>
-                <h2>Add New Garment</h2>
-<form id="addGarmentForm">
-    <input type="text" id="item_name" placeholder="Item Name" required>
-    <input type="number" id="quantity" placeholder="Quantity" required>
-    <input type="number" step="0.01" id="price" placeholder="Price" required>
-    <input type="text" id="supplier" placeholder="Supplier" required>
-    <button type="submit" id="submitButton">Add Garment</button>
-</form>
-<p id="addError" style="color: red;"></p>
+                </div>
+                <div class="add-new-garment">
+                    <h2>Add New Garment</h2>
+                    <form id="addGarmentForm">
+                        <input type="text" id="item_name" placeholder="Item Name" required>
+                        <input type="number" id="quantity" placeholder="Quantity" required>
+                        <input type="number" step="0.01" id="price" placeholder="Price" required>
+                        <input type="text" id="supplier" placeholder="Supplier" required>
+                        <button type="submit" id="submitButton">Add Garment</button>
+                    </form>
+                    <p id="addError" style="color: red;"></p>
 
-<!-- edit garment -->
-<form id="editGarmentForm" style="display: none;">
-    <input type="hidden" id="edit_id">
-    <input type="text" id="edit_item_name" placeholder="Item Name" required>
-    <input type="number" id="edit_quantity" placeholder="Quantity" required>
-    <input type="number" step="0.01" id="edit_price" placeholder="Price" required>
-    <input type="text" id="edit_supplier" placeholder="Supplier" required>
-    <button type="submit">Update Garment</button>
-    <button type="button" onclick="cancelEdit()">Cancel</button>
-</form>
-<p id="editError" style="color: red;"></p>
-
-<!--supplier filter -->
-<input type="text" id="searchInput" placeholder="Search by item name">
-<select id="filterSupplier">
-    <option value="">All Suppliers</option>
-    <option value="Supplier A">Supplier A</option>
-    <option value="Supplier B">Supplier B</option>
-    <option value="Supplier C">Supplier C</option>
-</select>
-
-
+                    <form id="editGarmentForm" style="display: none;">
+                        <input type="hidden" id="edit_id">
+                        <input type="text" id="edit_item_name" placeholder="Item Name" required>
+                        <input type="number" id="edit_quantity" placeholder="Quantity" required>
+                        <input type="number" step="0.01" id="edit_price" placeholder="Price" required>
+                        <input type="text" id="edit_supplier" placeholder="Supplier" required>
+                        <button type="submit">Update Garment</button>
+                        <button type="button" onclick="cancelEdit()">Cancel</button>
+                    </form>
+                    <p id="editError" style="color: red;"></p>
+                </div> 
             </section>
-            
         </main>
     </div>
-    
-    
     <script src="js/inventory.js"></script>
+    <script src="js/searchbar.js"></script>
 </body>
 </html>
