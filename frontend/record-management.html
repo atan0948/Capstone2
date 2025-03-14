@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
                 <img src="Images/logo.png" alt="Yaerinz Garments Logo">  
@@ -22,9 +23,11 @@
                 <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li> 
             </ul>
             <div class="logout">
-                <label id ="logout">Log Out</label>
+                <label id="logout">Log Out</label>
             </div>
         </aside>
+
+        <!-- Main Content -->
         <main class="content">
             <header>
                 <div class="search-bar">
@@ -32,32 +35,47 @@
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </header>
+
             <section class="page-content">
                 <h2>Record Management</h2>
+
+                <!-- Date Picker for Reports -->
+                <label for="reportDate">Select Date:</label>
+                <input type="date" id="reportDate">
+                <button id="generateReportBtn">Generate Report</button>
+
+                <!-- Reports Table -->
                 <table>
                     <thead>
                         <tr>
-                            <th>Report Type</th>
-                            <th>Date Generated</th>
-                            <th>Download Link</th>
+                            <th>ID</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Size</th>
+                            <th>Color</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Supplier</th>
+                            <th>Location</th>
+                            <th>Date Added</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="reportTableBody">
                         <tr>
-                            <td>Sales Report</td>
-                            <td>2024-06-20</td>
-                            <td><a href="#">Download</a></td>
+                            <td colspan="10">Select a date and generate a report.</td>
                         </tr>
-                        <tr>
-                            <td>Inventory Report</td>
-                            <td>2024-06-20</td>
-                            <td><a href="#">Download</a></td>
-                        </tr>
-                        </tbody>
+                    </tbody>
                 </table>
+                
+
+                <!-- Download Button -->
+                <button id="downloadReport">Download Report</button>
             </section>
         </main>
-    </div>
+    </div>   
+
+    <!-- Scripts -->
     <script src="js/searchbar.js"></script>
+    <script src="js/recordm.js"></script>
 </body>
 </html>

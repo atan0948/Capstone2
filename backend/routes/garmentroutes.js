@@ -1,6 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database/db'); // Ensure this file correctly exports your database connection
+const multer = require('multer');
+const db = require('../database/db'); // Ensure correct path
+
+// ✅ Configure Image Upload with Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/"); // Save images in 'uploads/' directory
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
+
+const upload = multer({ storage });
 
 // ✅ Get all garments
 router.get('/', async (req, res) => {
@@ -13,29 +26,43 @@ router.get('/', async (req, res) => {
     }
 });
 
-// ✅ Add a new garment
-router.post('/', async (req, res) => {
-    const { item_name, quantity, price, supplier } = req.body;
-    if (!item_name || !quantity || !price || !supplier) {
-        return res.status(400).json({ error: "Missing required fields." });
-    }
-
+// ✅ Add a new garment (WITH IMAGE UPLOAD)
+router.post("/", upload.single("image"), async (req, res) => {
     try {
-        await db.query('INSERT INTO garments (item_name, quantity, price, supplier) VALUES (?, ?, ?, ?)', 
-            [item_name, quantity, parseFloat(price), supplier]);
-        res.json({ message: 'Garment added successfully' });
+        console.log("📩 Incoming Request Body:", req.body);
+        console.log("📸 Uploaded File:", req.file);
+
+        const { item_name, category, size, color, quantity, price, cost_price, supplier, location } = req.body;
+        const imageUrl = req.file ? req.file.filename : null; // Get uploaded image filename
+
+        if (!item_name || !category || !size || !color || !quantity || !price || !supplier) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
+
+        const query = `INSERT INTO garments (item_name, category, size, color, quantity, price, cost_price, supplier, location, image_url) 
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [item_name, category, size, color, quantity, price, cost_price || 0, supplier, location, imageUrl];
+
+        console.log("📝 Executing Query:", query);
+        console.log("📊 With Values:", values);
+
+        const [result] = await db.query(query, values);
+        console.log("✅ Insert Result:", result);
+
+        res.json({ message: "Garment added successfully", imageUrl });
     } catch (error) {
         console.error("❌ Error adding garment:", error);
-        res.status(500).json({ error: 'Failed to add garment' });
+        res.status(500).json({ error: "Failed to add garment" });
     }
 });
 
 // ✅ Update a garment
 router.put('/:id', async (req, res) => {
-    console.log("📩 Update request received:", req.body); // Debugging
+    console.log("📩 Update request received:", req.body);
 
     const { item_name, quantity, price, supplier } = req.body;
     const { id } = req.params;
+
     if (!item_name || !quantity || !price || !supplier) {
         return res.status(400).json({ error: "Missing required fields." });
     }

@@ -128,15 +128,22 @@
                 <div class="add-new-garment">
                     <h2>Add New Garment</h2>
                     <form id="addGarmentForm" enctype="multipart/form-data">
-                        <input type="text" name="item_name" placeholder="Item Name" required>
-                        <input type="text" name="category" placeholder="Category" required>
+                        <input type="text" name="item_name" id="item_name" placeholder="Item name" required>
+                        <label for="category">Category:</label>
+<select id="category" name="category">
+    <option value="Dresses">Dresses</option>
+    <option value="Shirts">Shirts</option>
+    <option value="Pants">Pants</option>
+    <option value="Accessories">Accessories</option>
+</select>
+
                         <input type="text" name="size" placeholder="Size" required>
                         <input type="text" name="color" placeholder="Color" required>
                         <input type="number" name="quantity" placeholder="Quantity" required>
                         <input type="number" name="price" placeholder="Price" step="0.01" required>
-                        <input type="number" name="cost_price" placeholder="Cost Price" step="0.01" required>
+                        <input type="number" name="cost_price" id="cost_price" placeholder="cost price" required>
                         <input type="text" name="supplier" placeholder="Supplier" required>
-                        <input type="text" name="location" placeholder="Storage Location" required>
+                        <input type="text" name="location" id="location" placeholder="Storage location" required>
                         <input type="file" name="image" accept="image/*">
                         <button type="submit" id="submitButton">Add Garment</button>
                     </form>
