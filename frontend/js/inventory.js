@@ -1,108 +1,144 @@
-document.getElementById('addGarmentForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const form = this;
-    const id = form.dataset.editingId || null; // Get stored ID (null if adding new)
-    const item_name = document.getElementById('item_name').value.trim();
-    const quantity = document.getElementById('quantity').value.trim();
-    const price = document.getElementById('price').value.trim();
-    const supplier = document.getElementById('supplier').value.trim();
-    const errorElement = document.getElementById('addError');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("addGarmentForm");
 
-    if (!item_name || !quantity || !price || !supplier) {
-        errorElement.textContent = 'All fields are required.';
+    if (!form) {
+        console.error("❌ Form element 'addGarmentForm' not found. Check your HTML.");
+        return; // Stop execution if form is missing
+    }
+
+    form.addEventListener("submit", async function (event) {  
+        event.preventDefault();
+        console.log("✅ Form submission started...");
+    
+        const formData = new FormData(this);
+        const id = this.dataset.editingId || null;
+    
+        const jsonData = {};
+        formData.forEach((value, key) => { jsonData[key] = value; }); // Convert FormData to JSON
+    
+        try {
+            const url = id ? `http://localhost:3000/api/garments/${id}` : 'http://localhost:3000/api/garments';
+            const method = id ? 'PUT' : 'POST';
+    
+            const response = await fetch(url, {
+                method: method,
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token') 
+                },
+                body: JSON.stringify(jsonData) // Send JSON instead of FormData
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                alert(id ? 'Garment updated successfully!' : 'Garment added successfully!');
+                this.reset();
+                delete this.dataset.editingId;
+                document.getElementById('submitButton').textContent = "Add Garment"; // Reset button text
+                fetchGarments();
+            } else {
+                console.error("❌ Server responded with an error:", result);
+                document.getElementById('addError').textContent = result.error || 'Failed to save garment.';
+            }
+        } catch (error) {
+            console.error("❌ Fetch error:", error);
+            document.getElementById('addError').textContent = 'An error occurred. Try again.';
+        }
+    });
+    
+
+    function displayGarments(garments) {
+        const tableBody = document.getElementById('inventoryTableBody');
+        tableBody.innerHTML = ''; // Clear previous data
+    
+        if (!garments || garments.length === 0) {
+            console.warn("⚠ No garments found.");
+            return;
+        }
+    
+        garments.forEach(garment => {
+            // Ensure price and cost_price are numbers
+            const price = parseFloat(garment.price) || 0;
+            const cost_price = parseFloat(garment.cost_price) || 0;
+    
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${garment.id || 'N/A'}</td>
+                <td>${garment.item_name || 'N/A'}</td>
+                <td>${garment.category || 'N/A'}</td>
+                <td>${garment.size || 'N/A'}</td>
+                <td>${garment.color || 'N/A'}</td>
+                <td>${garment.quantity || 0}</td>
+                <td>₱${price.toFixed(2)}</td>
+                <td>₱${cost_price.toFixed(2)}</td>
+                <td>${garment.supplier || 'N/A'}</td>
+                <td>${garment.location || 'N/A'}</td>
+                <td>
+                    <img src="${garment.image_url ? garment.image_url : 'https://via.placeholder.com/50'}"
+     width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+                </td>
+                <td>
+                    <button onclick="editGarment(${garment.id}, '${garment.item_name}', '${garment.category}', '${garment.size}', '${garment.color}', ${garment.quantity}, ${price}, ${cost_price}, '${garment.supplier}', '${garment.location}', '${garment.image_url}')">Edit</button>
+                    <button onclick="deleteGarment(${garment.id})">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    
+        console.log("✅ Table updated successfully.");
+    }
+    
+
+    // Fetch and display inventory data
+    async function fetchGarments() {
+        try {
+            console.log("Fetching garments...");
+            const response = await fetch('http://localhost:3000/api/garments', {
+                headers: { 'Authorization': localStorage.getItem('token') }
+            });
+
+            if (!response.ok) throw new Error(`Failed to fetch: ${response.statusText}`);
+
+            const garments = await response.json();
+            console.log("Garments:", garments);
+            displayGarments(garments);
+        } catch (error) {
+            console.error('Error fetching inventory:', error);
+        }
+    }
+
+    // Fetch inventory on page load
+    window.fetchGarments = fetchGarments;
+
+    fetchGarments();
+});
+
+window.editGarment = function(id, item_name, category, size, color, quantity, price, cost_price, supplier, location, image_url) {
+    const form = document.getElementById("addGarmentForm");
+    if (!form) {
+        console.error("❌ Form not found.");
         return;
     }
 
-    try {
-        const url = id ? `http://localhost:3000/api/garments/${id}` : 'http://localhost:3000/api/garments';
-        const method = id ? 'PUT' : 'POST';
-
-        const response = await fetch(url, {
-            method: method,
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
-            },
-            body: JSON.stringify({ item_name, quantity, price, supplier })
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            alert(id ? 'Garment updated successfully!' : 'Garment added successfully!');
-            form.reset();
-            delete form.dataset.editingId; // ✅ Corrected typo
-            document.getElementById('submitButton').textContent = "Add Garment";
-            fetchGarments(); // Refresh table
-        } else {
-            errorElement.textContent = result.error || 'Failed to save garment.';
-        }
-    } catch (error) {
-        errorElement.textContent = 'An error occurred. Try again.';
-    }
-});
-
-// Fetch and display inventory data
-async function fetchGarments() {
-    try {
-        const response = await fetch('http://localhost:3000/api/garments', {
-            headers: { 'Authorization': localStorage.getItem('token') }
-        });
-        const garments = await response.json();
-        displayGarments(garments); // Use helper function
-    } catch (error) {
-        console.error('Error fetching inventory:', error);
-    }
-}
-
-// Helper function to display garments (with search & filter support)
-function displayGarments(garments) {
-    const tableBody = document.getElementById('inventoryTableBody');
-    tableBody.innerHTML = ''; // Clear previous data
-
-    // Get search and filter values
-    const searchValue = document.getElementById('searchInput').value.toLowerCase();
-    const filterSupplier = document.getElementById('filterSupplier').value.toLowerCase();
-
-    const filteredGarments = garments.filter(garment => 
-        garment.item_name.toLowerCase().includes(searchValue) && 
-        (filterSupplier === '' || garment.supplier.toLowerCase() === filterSupplier)
-    );
-
-    filteredGarments.forEach(garment => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${garment.id}</td>
-            <td>${garment.item_name}</td>
-            <td>${garment.quantity}</td>
-            <td>₱${garment.price}</td>
-            <td>${garment.supplier}</td>
-            <td>
-                <button onclick="editGarment(${garment.id}, '${garment.item_name}', ${garment.quantity}, ${garment.price}, '${garment.supplier}')">Edit</button>
-                <button onclick="deleteGarment(${garment.id})">Delete</button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-// Search & Filter Event Listeners
-document.getElementById('searchInput').addEventListener('input', fetchGarments);
-document.getElementById('filterSupplier').addEventListener('change', fetchGarments);
-
-// Edit Garment
-function editGarment(id, item_name, quantity, price, supplier) {
-    document.getElementById('item_name').value = item_name;
-    document.getElementById('quantity').value = quantity;
-    document.getElementById('price').value = price;
-    document.getElementById('supplier').value = supplier;
+    console.log(`✏ Editing garment ID: ${id}`);
     
-    document.getElementById('addGarmentForm').dataset.editingId = id;
-    document.getElementById('submitButton').textContent = "Update Garment";
-}
+    form.dataset.editingId = id; // Store ID for update
+    form.item_name.value = item_name;
+    form.category.value = category;
+    form.size.value = size;
+    form.color.value = color;
+    form.quantity.value = quantity;
+    form.price.value = price;
+    form.cost_price.value = cost_price;
+    form.supplier.value = supplier;
+    form.location.value = location;
+    document.getElementById("submitButton").textContent = "Update Garment"; // Change button text
+};
 
-// Delete Garment
-async function deleteGarment(id) {
-    if (!confirm('Are you sure you want to delete this garment?')) return;
+window.deleteGarment = async function (id) {
+    if (!confirm("Are you sure you want to delete this garment?")) return;
+
+    console.log(`🗑 Attempting to delete garment ID: ${id}`);
 
     try {
         const response = await fetch(`http://localhost:3000/api/garments/${id}`, {
@@ -110,30 +146,45 @@ async function deleteGarment(id) {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
+        const result = await response.json();
+        console.log("🔍 Response received:", result);
+
         if (response.ok) {
-            alert('Garment deleted successfully!');
-            fetchGarments(); // Refresh table
+            alert("Garment deleted successfully!");
+            window.fetchGarments(); // ✅ Refresh the inventory
         } else {
-            alert('Failed to delete garment.');
+            console.error("❌ Error deleting garment:", result);
+            alert("Failed to delete garment.");
         }
     } catch (error) {
-        alert('An error occurred. Try again.');
+        console.error("❌ Fetch error:", error);
+        alert("An error occurred while deleting.");
     }
-}
+};
 
-// Fetch data when the page loads
-document.addEventListener('DOMContentLoaded', fetchGarments);
+async function updateGarment(id, item_name, quantity, price, supplier) {
+    console.log(`✏️ Updating garment ID: ${id}`);
+    
+    try {
+        const response = await fetch(`http://localhost:3000/api/garments/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ item_name, quantity, price, supplier }),
+        });
 
-//Add columns sa table lang ah parang design natahanael dont mind this hahahaha
-function addEmptyRows(tableBody, numRows) {
-    for (let i = 0; i < numRows; i++) {
-        let row = tableBody.insertRow();
-        for (let j = 0; j < 6; j++) { 
-            row.insertCell();
+        const data = await response.json();
+        console.log("✅ Update Response:", data);
+
+        if (data.error) {
+            console.error("❌ Error updating garment:", data.error);
+            return;
         }
+
+        // ✅ Refresh the inventory list (DON'T append new row!)
+        fetchGarments(); 
+    } catch (error) {
+        console.error("❌ Fetch error:", error);
     }
 }
-
-const tableBody = document.getElementById('inventoryTableBody');
-
-addEmptyRows(tableBody,10);

@@ -7,6 +7,7 @@
         {
             "type": "chrome",
             "request": "launch",
+   
             "name": "Open index.html",
             "file": "c:\\Users\\User\\Documents\\capstone\\frontend\\index.html"
         }

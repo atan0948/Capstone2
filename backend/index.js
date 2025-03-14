@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/authroutes');
 const garmentsRoutes = require('./routes/garmentroutes');
 const salesRoutes = require('./routes/sales'); 
+const garmentFileUpload = require('./routes/garment_fileupload'); // ✅ Renamed for clarity
 const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 
@@ -14,35 +15,43 @@ const app = express();
 app.use(cors({
     origin: 'http://127.0.0.1:5500', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 
+// ✅ Middleware
 app.use(express.json()); // Parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // Needed for form-data
 
-// ✅ Use authentication routes
+// ✅ Authentication routes
 app.use('/api', authRoutes);
 
-// ✅ Use garments routes
+// ✅ Garment CRUD routes
 app.use('/api/garments', garmentsRoutes);
 
-// ✅ Use sales routes
-app.use('/api', salesRoutes);  // ✅ FIXED: Now sales API is properly structured
+// ✅ Garment file upload routes
+app.use('/api/garments/upload', garmentFileUpload); // ✅ Moved to `/api/garments/upload`
+
+// ✅ Sales routes
+app.use('/api', salesRoutes);
+
+// ✅ Static file serving for uploads
+app.use('/uploads', express.static('uploads'));
 
 // ✅ Protected route (using middleware)
 app.get('/api/protected', verifyToken, (req, res) => {
     res.json({ message: "Welcome to the protected route!", user: req.user });
 });
 
-// ✅ Ensure Database Connection (if using MySQL)
+// ✅ Ensure Database Connection
 db.getConnection((err, connection) => {
     if (err) {
         console.error("Database connection failed:", err);
         return;
     }
-    console.log("Connected to MySQL Database");
+    console.log("✅ Connected to MySQL Database");
     connection.release();
 });
 
 // ✅ Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
