@@ -48,3 +48,4 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('username').addEventListener('input', () => errorElement.textContent = '');
     document.getElementById('password').addEventListener('input', () => errorElement.textContent = '');
 });
+

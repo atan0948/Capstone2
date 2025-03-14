@@ -6,13 +6,14 @@
     <title>Yaerinz Garments Automation System</title>
     <link rel="stylesheet" href="system.css">  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Added Chart.js -->
 </head>
 <body>
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
-                <img src="images/logo.png" alt="Yaerinz Garments Logo">  <h2>Yaerinz Garments</h2>
+                <img src="images/logo.png" alt="Yaerinz Garments Logo">  
+                <h2>Yaerinz Garments</h2>
                 <p>Automation System</p>
             </div>
             <ul class="nav">
@@ -32,6 +33,7 @@
                     <button><i class="fas fa-search"></i></button>
                 </div>
             </header>
+
             <section class="overview">
                 <h2>Overview</h2>
                 <div class="metrics">
@@ -52,7 +54,12 @@
                         <p class="value">1 Orders</p>
                     </div>
                 </div>
+
+                <!-- Inventory Line Chart -->
+                <h3>Inventory Changes Over Time</h3>
+                <canvas id="inventoryChart"></canvas>
             </section>
+
             <section class="sales">
                 <h3>Sales</h3>
                 <table>
@@ -78,13 +85,14 @@
                     </tbody>
                 </table>
             </section>
+
             <section class="inventory-status">
                 <h3>Inventory Status</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Itemname</th>
+                            <th>Item Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
                             <th>Supplier</th>
@@ -103,7 +111,10 @@
             </section>
         </main>
     </div>
+
     <script src="js/script.js"></script>
     <script src="js/searchbar.js"></script>
+    <script src="js/dashboard.js"></script> <!-- New script for chart -->
+
 </body>
 </html>

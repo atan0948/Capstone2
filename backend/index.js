@@ -8,6 +8,7 @@ const garmentFileUpload = require('./routes/garment_fileupload'); // ✅ Renamed
 const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 const records = require('./routes/records');
+const inventoryRoutes = require('./routes/inventory_chart'); // Ensure it's correctly imported
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,8 @@ app.use('/api/garments/upload', garmentFileUpload); // ✅ Moved to `/api/garmen
 app.use('/api', salesRoutes);
 
 app.use('/api/records', records);
+
+app.use('/api/inventory', inventoryRoutes);
 
 // ✅ Static file serving for uploads
 app.use('/uploads', express.static('uploads'));
