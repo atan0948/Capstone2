@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/db');
-const excelJS = require('exceljs'); // Make sure you have this installed
+const excelJS = require('exceljs');
 
+// 📂 Export today's garments (you can expand this for range later)
 router.get('/export', async (req, res) => {
-    console.log("✅ Export route hit!");
-
     try {
-        const query = `SELECT * FROM garments WHERE DATE(date_added) = ? OR date_added = ?`;
-        const [records] = await db.promise().query(query, [formattedDate, formattedDate]);
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
 
+        const query = `SELECT * FROM garments WHERE DATE(date_added) = ?`;
+        const [records] = await db.promise().query(query, [formattedDate]);
 
         if (!records || records.length === 0) {
             return res.status(404).json({ error: 'No records found' });
@@ -48,6 +49,7 @@ router.get('/export', async (req, res) => {
     }
 });
 
+// 📅 Get garments for a specific date
 router.get('/report/:date', async (req, res) => {
     try {
         const selectedDate = req.params.date;
@@ -63,5 +65,36 @@ router.get('/report/:date', async (req, res) => {
     }
 });
 
+// 📆 Get garments & sales between date range
+router.get('/report', async (req, res) => {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ error: 'Start and end dates are required' });
+    }
+
+    try {
+        const inventoryQuery = `
+            SELECT * FROM garments 
+            WHERE DATE(date_added) BETWEEN ? AND ?
+        `;
+        const salesQuery = `
+            SELECT sales.id, garments.item_name, sales.quantity_sold, sales.total, 
+                   sales.customer_name, sales.payment_type, sales.sale_date
+            FROM sales 
+            JOIN garments ON sales.item_id = garments.id
+            WHERE DATE(sale_date) BETWEEN ? AND ?
+        `;
+
+        const [inventory] = await db.query(inventoryQuery, [start, end]);
+        const [sales] = await db.query(salesQuery, [start, end]);
+
+
+        res.json({ inventory, sales }); // 👈 Send both
+    } catch (error) {
+        console.error("❌ Error fetching report by date range:", error);
+        res.status(500).json({ error: "Failed to fetch report data." });
+    }
+});
 
 module.exports = router;

@@ -39,10 +39,15 @@
             <section class="page-content">
                 <h2>Record Management</h2>
 
-                <!-- Date Picker for Reports -->
-                <label for="reportDate">Select Date:</label>
-                <input type="date" id="reportDate">
-                <button id="generateReportBtn">Generate Report</button>
+<!-- Date Range Filter -->
+<div class="date-filter">
+    <label for="fromDate">From:</label>
+    <input type="date" id="fromDate">
+    <label for="toDate">To:</label>
+    <input type="date" id="toDate">
+    <button id="generateReportBtn">Generate Report</button>
+</div>
+
 
                 <!-- Reports Table -->
                 <table>
@@ -66,10 +71,31 @@
                         </tr>
                     </tbody>
                 </table>
+                        <!-- Download Button -->
+                        <button id="downloadReport">Download Report</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Item Name</th>
+                            <th>Quantity Sold</th>
+                            <th>Total</th>
+                            <th>Customer Name</th>
+                            <th>Payment Type</th>
+                            <th>Sale Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <tr>
+                            <td colspan="10">Select a date and generate a report.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
                 
 
-                <!-- Download Button -->
-                <button id="downloadReport">Download Report</button>
+                    <!-- Download Button -->
+                    <button id="downloadReport">Download Report</button>
             </section>
         </main>
     </div>   

@@ -1,64 +1,74 @@
-document.getElementById("downloadReport").addEventListener("click", function () {
-    window.location.href = "http://localhost:3000/api/records/export";
-});
+document.getElementById('generateReportBtn').addEventListener('click', async () => {
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = document.getElementById('toDate').value;
 
-document.getElementById("generateReportBtn").addEventListener("click", async function () {
-    const selectedDate = document.getElementById("reportDate").value;
-
-    if (!selectedDate) {
-        alert("Please select a date.");
+    if (!fromDate || !toDate) {
+        alert("Please select both dates.");
         return;
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/records/report/${selectedDate}`, {
-            headers: { 'Authorization': localStorage.getItem('token') }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch report: ${response.statusText}`);
+        const res = await fetch(`http://localhost:3000/api/records/report?start=${fromDate}&end=${toDate}`);
+        if (!res.ok) {
+            throw new Error('Failed to fetch report');
         }
 
-        const data = await response.json();
-        updateReportTable(data);
-    } catch (error) {
-        console.error("❌ Error fetching report:", error);
-        alert("Failed to load report.");
+        const reportData = await res.json();
+
+        populateInventoryTable(reportData.inventory);
+        populateSalesTable(reportData.sales);
+
+    } catch (err) {
+        console.error('❌ Error fetching report:', err);
+        alert("There was an error generating the report.");
     }
 });
 
-function updateReportTable(records) {
-    const tableBody = document.getElementById("reportTableBody");
-    tableBody.innerHTML = ''; // Clear previous data
-
-    if (!records.length) {
-        tableBody.innerHTML = '<tr><td colspan="10">No records found for this date.</td></tr>';
+function populateInventoryTable(data) {
+    const tbody = document.getElementById('reportTableBody');
+    tbody.innerHTML = '';
+    if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10">No inventory records found for this date range.</td></tr>';
         return;
     }
 
-    records.forEach(record => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${record.id}</td>
-            <td>${record.item_name}</td>
-            <td>${record.category}</td>
-            <td>${record.size}</td>
-            <td>${record.color}</td>
-            <td>${record.quantity}</td>
-            <td>₱${parseFloat(record.price).toFixed(2)}</td>
-            <td>${record.supplier}</td>
-            <td>${record.location}</td>
-            <td>${formatDate(record.date_added)}</td>
+    data.forEach(item => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.id}</td>
+                <td>${item.item_name}</td>
+                <td>${item.category}</td>
+                <td>${item.size}</td>
+                <td>${item.color}</td>
+                <td>${item.quantity}</td>
+                <td>₱${parseFloat(item.price).toFixed(2)}</td>
+                <td>${item.supplier}</td>
+                <td>${item.location}</td>
+                <td>${new Date(item.date_added).toLocaleDateString()}</td>
+            </tr>
         `;
-        tableBody.appendChild(row);
     });
-
-    console.log("✅ Report table updated successfully.");
 }
 
-// Function to format the date properly
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB"); // Formats as "DD/MM/YYYY"
-}
+function populateSalesTable(data) {
+    const tbody = document.getElementById('recordsTableBody');
+    tbody.innerHTML = '';
+    if (!data || data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7">No sales records found for this date range.</td></tr>';
+        return;
+    }
 
+    data.forEach(sale => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${sale.id}</td>
+                <td>${sale.item_name}</td>
+                <td>${sale.quantity_sold}</td>
+                <td>₱${parseFloat(sale.total).toFixed(2)}</td>
+                <td>${sale.customer_name || '-'}</td>
+                <td>${sale.payment_type || '-'}</td>
+                <td>${new Date(sale.sale_date).toLocaleString()}</td>
+            </tr>
+        `;
+    });
+}
