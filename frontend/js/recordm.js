@@ -72,3 +72,30 @@ function populateSalesTable(data) {
         `;
     });
 }
+
+document.getElementById("downloadInventoryBtn").addEventListener("click", () => {
+    const start = document.getElementById("fromDate").value;
+    const end = document.getElementById("toDate").value;
+
+    if (!start || !end) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+
+    const url = `http://localhost:3000/api/records/export-inventory-range?start=${start}&end=${end}`;
+    window.open(url, "_blank");
+});
+
+document.getElementById("downloadSalesBtn").addEventListener("click", () => {
+    const start = document.getElementById("fromDate").value;
+    const end = document.getElementById("toDate").value;
+
+    if (!start || !end) {
+        alert("Please select both start and end dates.");
+        return;
+    }
+
+    const url = `http://localhost:3000/api/records/export-sales-range?start=${start}&end=${end}`;
+    window.open(url, "_blank");
+});
+
