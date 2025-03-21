@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'login.html'; // Redirect to login
     });
 
-    // Fetch and display inventory changes
+    // Fetch data
     fetchInventoryChanges();
+    fetchTodayDefects(); // 👈 Call the function for today's defects
 });
 
 async function fetchInventoryChanges() {
@@ -50,7 +51,7 @@ function renderInventoryChart(labels, quantities) {
             labels: labels.length ? labels : ["No Data"],
             datasets: [{
                 label: "Inventory Over Time",
-                data: quantities.length ? quantities : [0], // Avoid empty dataset issues
+                data: quantities.length ? quantities : [0],
                 borderColor: "#3498db",
                 backgroundColor: "rgba(52, 152, 219, 0.2)",
                 borderWidth: 2,
@@ -69,4 +70,13 @@ function renderInventoryChart(labels, quantities) {
     });
 
     console.log("📊 Inventory chart updated successfully.");
+}
+
+function fetchTodayDefects() {
+    fetch('http://localhost:3000/api/defects/today')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('todayDefectCount').textContent = data.defectCount;
+        })
+        .catch(err => console.error('Error fetching defect count:', err));
 }

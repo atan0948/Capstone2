@@ -116,6 +116,7 @@
                                 <th>Cost Price</th>
                                 <th>Supplier</th>
                                 <th>Storage Location</th>
+                                <th>Status</th>
                                 <th>Image</th>
                                 <th>Actions</th>
                             </tr>
@@ -135,22 +136,99 @@
     <option value="Shirts">Shirts</option>
     <option value="Pants">Pants</option>
     <option value="Accessories">Accessories</option>
-</select>
+</select><br>
 
-                        <input type="text" name="size" placeholder="Size" required>
+                        <label for="size">Size:</label>
+                        <select name="size" id="size" required>
+                          <option value="" disabled selected>Select Size</option>
+                          <option value="Extra Small">Extra Small</option>
+<option value="Small">Small</option>
+<option value="Medium">Medium</option>
+<option value="Large">Large</option>
+<option value="Extra Large">Extra Large</option>
+
+                        </select>
+                        
                         <input type="text" name="color" placeholder="Color" required>
                         <input type="number" name="quantity" placeholder="Quantity" required>
                         <input type="number" name="price" placeholder="Price" step="0.01" required>
                         <input type="number" name="cost_price" id="cost_price" placeholder="cost price" required>
                         <input type="text" name="supplier" placeholder="Supplier" required>
                         <input type="text" name="location" id="location" placeholder="Storage location" required>
+                        <label for="status">Status:</label>
+<select id="status" name="status" required>
+  <option value="Available">Available</option>
+  <option value="Defective">Defective</option>
+</select>
+
                         <input type="file" name="image" accept="image/*">
                         <button type="submit" id="submitButton">Add Garment</button>
                     </form>
                 </div>
             </section>
         </main>
+        
     </div>
+    <!-- Edit Modal -->
+<div id="editModal" style="display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px gray; z-index: 999;">
+    <h3>Edit Garment</h3>
+    <form id="editGarmentForm" enctype="multipart/form-data">
+        <input type="hidden" id="editId">
+    
+        <label>Item Name:</label>
+        <input type="text" id="editItemName" required><br>
+    
+        <label>Category:</label>
+        <select id="editCategory">
+            <option value="Dresses">Dresses</option>
+            <option value="Shirts">Shirts</option>
+            <option value="Pants">Pants</option>
+            <option value="Accessories">Accessories</option>
+        </select><br>
+    
+        <label>Size:</label>
+        <select id="editSize" name="size" required>
+            <option value="Extra Small">Extra Small</option>
+<option value="Small">Small</option>
+<option value="Medium">Medium</option>
+<option value="Large">Large</option>
+<option value="Extra Large">Extra Large</option>
+
+          </select><br>       
+    
+        <label>Color:</label>
+        <input type="text" id="editColor" required><br>
+    
+        <label>Quantity:</label>
+        <input type="number" id="editQuantity" required><br>
+    
+        <label>Price:</label>
+        <input type="number" id="editPrice" required><br>
+    
+        <label>Cost Price:</label>
+        <input type="number" id="editCostPrice" required><br>
+    
+        <label>Supplier:</label>
+        <input type="text" id="editSupplier" required><br>
+    
+        <label>Location:</label>
+        <input type="text" id="editLocation" required><br>
+    
+        <label>Status:</label>
+        <select id="editStatus">
+            <option value="Available">Available</option>
+            <option value="Defective">Defective</option>
+        </select><br>
+    
+        <label>Image:</label>
+        <input type="file" id="editImage" accept="image/*"><br><br>
+    
+        <button type="submit">Update</button>
+        <button type="button" onclick="closeEditModal()">Cancel</button>
+    </form>
+    
+</div>
+
     <script src="js/inventory.js"></script>
     <script src="js/searchbar.js"></script>
     <script src="js/image.js"></script>

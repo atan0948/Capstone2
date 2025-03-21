@@ -32,16 +32,16 @@ router.post("/", upload.single("image"), async (req, res) => {
         console.log("📩 Incoming Request Body:", req.body);
         console.log("📸 Uploaded File:", req.file);
 
-        const { item_name, category, size, color, quantity, price, cost_price, supplier, location } = req.body;
+        const { item_name, category, size, color, quantity, price, cost_price, supplier, location, status } = req.body;
         const imageUrl = req.file ? req.file.filename : null; // Get uploaded image filename
 
         if (!item_name || !category || !size || !color || !quantity || !price || !supplier) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
-        const query = `INSERT INTO garments (item_name, category, size, color, quantity, price, cost_price, supplier, location, image_url) 
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        const values = [item_name, category, size, color, quantity, price, cost_price || 0, supplier, location, imageUrl];
+        const query = `INSERT INTO garments (item_name, category, size, color, quantity, price, cost_price, supplier, location, image_url, status) 
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [item_name, category, size, color, quantity, price, cost_price || 0, supplier, location, imageUrl, status];
 
         console.log("📝 Executing Query:", query);
         console.log("📊 With Values:", values);
@@ -60,7 +60,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 router.put('/:id', async (req, res) => {
     console.log("📩 Update request received:", req.body);
 
-    const { item_name, quantity, price, supplier } = req.body;
+    const { item_name, quantity, price, supplier, status } = req.body;
     const { id } = req.params;
 
     if (!item_name || !quantity || !price || !supplier) {
@@ -69,8 +69,8 @@ router.put('/:id', async (req, res) => {
 
     try {
         const [result] = await db.query(
-            "UPDATE garments SET item_name=?, quantity=?, price=?, supplier=? WHERE id=?",
-            [item_name, quantity, parseFloat(price), supplier, id]
+            "UPDATE garments SET item_name=?, quantity=?, price=?, supplier=?, status=? WHERE id=?",
+            [item_name, quantity, parseFloat(price), supplier, status, id]        
         );
 
         if (result.affectedRows === 0) {

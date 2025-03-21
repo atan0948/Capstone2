@@ -83,6 +83,7 @@ function displayGarments(garments) {
             <td>₱${cost_price.toFixed(2)}</td>
             <td>${garment.supplier || 'N/A'}</td>
             <td>${garment.location || 'N/A'}</td>
+            <td>${garment.status || 'Available'}</td>
             <td>
                 <img src="${garment.image_url ? `/uploads/${garment.image_url}` : 'https://via.placeholder.com/50'}"
                 width="50" height="50" style="object-fit: cover; border-radius: 5px;">
@@ -123,3 +124,63 @@ window.deleteGarment = async function (id) {
         alert("An error occurred while deleting.");
     }
 };
+
+window.editGarment = function (
+    id, item_name, category, size, color, quantity, price, cost_price, supplier, location, status
+) {
+    document.getElementById("editId").value = id;
+    document.getElementById("editItemName").value = item_name;
+    document.getElementById("editCategory").value = category;
+    document.getElementById("editSize").value = size; // ✅ This will work fine for a <select>
+    document.getElementById("editColor").value = color;
+    document.getElementById("editQuantity").value = quantity;
+    document.getElementById("editPrice").value = price;
+    document.getElementById("editCostPrice").value = cost_price;
+    document.getElementById("editSupplier").value = supplier;
+    document.getElementById("editLocation").value = location;
+    document.getElementById("editStatus").value = status;
+
+    document.getElementById("editModal").style.display = "block";
+};
+
+
+function closeEditModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+document.getElementById('editGarmentForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById('editId').value;
+
+    const formData = new FormData();
+    formData.append('item_name', document.getElementById('editItemName').value);
+    formData.append('category', document.getElementById('editCategory').value);
+    formData.append('size', document.getElementById('editSize').value);
+    formData.append('color', document.getElementById('editColor').value);
+    formData.append('quantity', document.getElementById('editQuantity').value);
+    formData.append('price', document.getElementById('editPrice').value);
+    formData.append('cost_price', document.getElementById('editCostPrice').value);
+    formData.append('supplier', document.getElementById('editSupplier').value);
+    formData.append('location', document.getElementById('editLocation').value);
+    formData.append('status', document.getElementById('editStatus').value);
+
+    const image = document.getElementById('editImage').files[0];
+    if (image) {
+        formData.append('image', image);
+    }
+
+    fetch(`http://localhost:3000/api/garments/${id}`, {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Garment updated successfully!');
+        location.reload();
+    })
+    .catch(err => {
+        alert('Error updating garment: ' + err.message);
+        console.error(err);
+    });
+});
