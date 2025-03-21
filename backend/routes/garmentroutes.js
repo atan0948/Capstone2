@@ -99,4 +99,23 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// Get a single garment by ID
+router.get('/:id', async (req, res) => {
+    const garmentId = req.params.id;
+
+    try {
+        const [rows] = await db.execute('SELECT * FROM garments WHERE id = ?', [garmentId]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Garment not found' });
+        }
+
+        res.json(rows[0]);
+    } catch (err) {
+        console.error('Error fetching garment by ID:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+
 module.exports = router;

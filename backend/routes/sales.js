@@ -1,56 +1,71 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database/db'); // Ensure this is your database connection file
+const db = require('../database/db'); // Your DB connection
 
-// Add a sale and deduct inventory
+// ✅ Add a sale and deduct inventory   
 router.post('/sales', async (req, res) => {
-    const { item_id, quantity_sold } = req.body;
+    const { item_id, quantity_sold, payment_type, customer_name } = req.body;
 
-    if (!item_id || !quantity_sold) {
-        return res.status(400).json({ error: 'Item ID and quantity sold are required' });
+    if (!item_id || !quantity_sold || quantity_sold <= 0) {
+        return res.status(400).json({ error: 'Item ID and valid quantity sold are required' });
     }
 
     try {
-        // Check if the item exists and get its current quantity
-        const [item] = await db.query('SELECT quantity FROM garments WHERE id = ?', [item_id]);
+        // 1. Fetch item to get stock and price
+        const [items] = await db.execute('SELECT quantity, price FROM garments WHERE id = ?', [item_id]);
 
-        if (!item || item.length === 0) {
+        if (items.length === 0) {
             return res.status(404).json({ error: 'Item not found' });
         }
 
-        if (item[0].quantity < quantity_sold) {
+        const item = items[0];
+
+        if (item.quantity < quantity_sold) {
             return res.status(400).json({ error: 'Not enough stock available' });
         }
 
-        // Deduct the quantity from inventory
-        await db.query('UPDATE garments SET quantity = quantity - ? WHERE id = ?', [quantity_sold, item_id]);
+        const total = item.price * quantity_sold;
 
-        // Insert into sales table
-        await db.query('INSERT INTO sales (item_id, quantity_sold) VALUES (?, ?)', [item_id, quantity_sold]);
+        // 2. Update garment stock
+        await db.execute('UPDATE garments SET quantity = quantity - ? WHERE id = ?', [quantity_sold, item_id]);
 
-        res.json({ message: 'Sale recorded and inventory updated' });
+        // 3. Insert into sales table
+        await db.execute(
+            `INSERT INTO sales (item_id, quantity_sold, total, sale_date, payment_type, customer_name)
+             VALUES (?, ?, ?, NOW(), ?, ?)`,
+            [item_id, quantity_sold, total, payment_type, customer_name]
+        );
+
+        res.status(201).json({ message: 'Sale recorded and inventory updated' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
 });
 
-// Get all sales with item details
+// ✅ Get all sales with item details
 router.get('/sales', async (req, res) => {
     try {
-        const sales = await db.query(`
-            SELECT sales.id, garments.item_name, sales.quantity_sold, sales.sale_date 
+        const [sales] = await db.execute(`
+            SELECT 
+                sales.id,
+                garments.item_name,
+                garments.price,
+                sales.quantity_sold,
+                sales.total,
+                sales.payment_type,
+                sales.customer_name,
+                sales.sale_date
             FROM sales 
             JOIN garments ON sales.item_id = garments.id 
             ORDER BY sales.sale_date DESC
         `);
 
-        res.json(sales[0]);
+        res.json(sales);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
     }
 });
-
 
 module.exports = router;

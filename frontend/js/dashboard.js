@@ -2,25 +2,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('token');
 
     if (!token) {
-        // Redirect to login if no token is found
         window.location.href = 'login.html';
+        return;
     }
 
     // Logout functionality
     document.getElementById('logout').addEventListener('click', () => {
-        localStorage.removeItem('token'); // Remove token
-        window.location.href = 'login.html'; // Redirect to login
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
     });
 
-    // Fetch data
+    // Fetch and display data
     fetchInventoryChanges();
-    fetchTodayDefects(); // 👈 Call the function for today's defects
+    fetchTodayDefects();
 });
 
 async function fetchInventoryChanges() {
     try {
         const response = await fetch("http://localhost:3000/api/inventory/inventory-changes");
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -29,7 +29,7 @@ async function fetchInventoryChanges() {
 
         if (!data.length) {
             console.warn("⚠️ No inventory data found.");
-            renderInventoryChart([], []); // Avoid breaking the chart
+            renderInventoryChart([], []);
             return;
         }
 
@@ -73,10 +73,16 @@ function renderInventoryChart(labels, quantities) {
 }
 
 function fetchTodayDefects() {
-    fetch('http://localhost:3000/api/defects/today')
+    fetch('http://localhost:3000/api/defects/today', {
+        headers: {
+            "Cache-Control": "no-cache"
+        }
+    })
         .then(res => res.json())
         .then(data => {
-            document.getElementById('todayDefectCount').textContent = data.defectCount;
+            console.log("🐞 Today's Defects:", data);
+            const count = data.defectCount !== undefined ? data.defectCount : 0;
+            document.getElementById('todayDefectCount').textContent = count;
         })
-        .catch(err => console.error('Error fetching defect count:', err));
+        .catch(err => console.error('❌ Error fetching defect count:', err));
 }

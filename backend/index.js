@@ -17,7 +17,7 @@ const app = express();
 app.use(cors({
     origin: 'http://127.0.0.1:5500', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Cache-Control']
 }));
 
 // ✅ Middleware
