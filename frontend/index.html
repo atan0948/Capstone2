@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yaerinz Garments Automation System</title>
-    <link rel="stylesheet" href="system.css">  
+    <link rel="stylesheet" href="css/system.css">
+    <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Added Chart.js -->
 </head>
 <body>
+    <div class="mobile-header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Here">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
     <div class="container">
         <aside class="sidebar">
             <div class="logo">
@@ -111,10 +121,10 @@
             </section>
         </main>
     </div>
-
+    <script src="js/menu-toggle.js"></script>
     <script src="js/script.js"></script>
     <script src="js/searchbar.js"></script>
-    <script src="js/dashboard.js"></script> <!-- New script for chart -->
+   <!-- <script src="js/dashboard.js"></script>  New script for chart -->
 
 </body>
 </html>

@@ -1,0 +1,78 @@
+/* records.css - For record-management.html content */
+.page-content {
+    width: 100%;
+}
+
+.date-filter {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.date-filter label {
+    font-weight: 500;
+}
+
+.date-filter input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#generateReportBtn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#generateReportBtn:hover {
+    background-color: #0056b3;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+#downloadInventoryBtn, #downloadSalesBtn {
+    padding: 10px 15px;
+    margin: 10px 0;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#downloadInventoryBtn:hover, #downloadSalesBtn:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 768px) {
+    .date-filter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
