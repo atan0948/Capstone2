@@ -4,80 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yaerinz Garments - Inventory</title>
-    <link rel="stylesheet" href="system.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .page-content {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .inventory-table, .add-new-garment {
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        #addGarmentForm input {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-        }
-
-        #addGarmentForm button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 150px;
-        }
-
-        #addGarmentForm button:hover {
-            background-color: #0056b3;
-        }
-
-        #searchInput, #filterSupplier {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            .page-content {
-                flex-direction: row;
-            }
-
-            .inventory-table {
-                padding-right: 20px;
-                width: 70%;
-            }
-
-            .add-new-garment {
-                padding-left: 20px;
-                border-left: 1px solid #ccc;
-                width: 30%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/system.css">
+    <link rel="stylesheet" href="css/inventory.css">
 </head>
 <body>
+    <div class="mobile-header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Here">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
     <div class="container">
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="logo">
                 <img src="Images/Logo.png" alt="Yaerinz Garments Logo">
                 <h2>Yaerinz Garments</h2>
@@ -102,133 +44,152 @@
             </header>
             <section class="page-content">
                 <div class="inventory-table">
-                    <h2>Inventory</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Item Name</th>
-                                <th>Category</th>
-                                <th>Size</th>
-                                <th>Color</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Cost Price</th>
-                                <th>Supplier</th>
-                                <th>Storage Location</th>
-                                <th>Status</th>
-                                <th>Image</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventoryTableBody">
-                            <!-- Items will be added dynamically here -->
-                        </tbody>
-                    </table>
+                    <div class="inventory-header">
+                        <h2>Inventory</h2>
+                        <div class="inventory-controls">
+                            <input type="text" id="searchInput" placeholder="Search inventory...">
+                            <select id="filterSupplier">
+                                <option value="">All Suppliers</option>
+                                <!-- Supplier options will be added dynamically -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inventory-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Cost Price</th>
+                                    <th>Supplier</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Image</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody">
+                                <tr>
+                                    <td colspan="13" style="text-align: center;">Loading inventory data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="add-new-garment">
                     <h2>Add New Garment</h2>
                     <form id="addGarmentForm" enctype="multipart/form-data">
                         <input type="text" name="item_name" id="item_name" placeholder="Item name" required>
+                        
                         <label for="category">Category:</label>
-<select id="category" name="category">
-    <option value="Dresses">Dresses</option>
-    <option value="Shirts">Shirts</option>
-    <option value="Pants">Pants</option>
-    <option value="Accessories">Accessories</option>
-</select><br>
-
+                        <select id="category" name="category">
+                            <option value="Dresses">Dresses</option>
+                            <option value="Shirts">Shirts</option>
+                            <option value="Pants">Pants</option>
+                            <option value="Accessories">Accessories</option>
+                        </select>
+                        
                         <label for="size">Size:</label>
                         <select name="size" id="size" required>
-                          <option value="" disabled selected>Select Size</option>
-                          <option value="Extra Small">Extra Small</option>
-<option value="Small">Small</option>
-<option value="Medium">Medium</option>
-<option value="Large">Large</option>
-<option value="Extra Large">Extra Large</option>
-
+                            <option value="" disabled selected>Select Size</option>
+                            <option value="Extra Small">Extra Small</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                            <option value="Extra Large">Extra Large</option>
                         </select>
                         
                         <input type="text" name="color" placeholder="Color" required>
                         <input type="number" name="quantity" placeholder="Quantity" required>
                         <input type="number" name="price" placeholder="Price" step="0.01" required>
-                        <input type="number" name="cost_price" id="cost_price" placeholder="cost price" required>
+                        <input type="number" name="cost_price" id="cost_price" placeholder="Cost Price" required>
                         <input type="text" name="supplier" placeholder="Supplier" required>
                         <input type="text" name="location" id="location" placeholder="Storage location" required>
+                        
                         <label for="status">Status:</label>
-<select id="status" name="status" required>
-  <option value="Available">Available</option>
-  <option value="Defective">Defective</option>
-</select>
-
-                        <input type="file" name="image" accept="image/*">
+                        <select id="status" name="status" required>
+                            <option value="Available">Available</option>
+                            <option value="Defective">Defective</option>
+                        </select>
+                        
+                        <label for="image">Image:</label>
+                        <input type="file" name="image" id="image" accept="image/*">
+                        
                         <button type="submit" id="submitButton">Add Garment</button>
                     </form>
                 </div>
             </section>
         </main>
-        
     </div>
+    
     <!-- Edit Modal -->
-<div id="editModal" style="display: none; position: fixed; top: 10%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px gray; z-index: 999;">
-    <h3>Edit Garment</h3>
-    <form id="editGarmentForm" enctype="multipart/form-data">
-        <input type="hidden" id="editId">
-    
-        <label>Item Name:</label>
-        <input type="text" id="editItemName" required><br>
-    
-        <label>Category:</label>
-        <select id="editCategory">
-            <option value="Dresses">Dresses</option>
-            <option value="Shirts">Shirts</option>
-            <option value="Pants">Pants</option>
-            <option value="Accessories">Accessories</option>
-        </select><br>
-    
-        <label>Size:</label>
-        <select id="editSize" name="size" required>
-            <option value="Extra Small">Extra Small</option>
-<option value="Small">Small</option>
-<option value="Medium">Medium</option>
-<option value="Large">Large</option>
-<option value="Extra Large">Extra Large</option>
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div id="editModal">
+        <h3>Edit Garment</h3>
+        <form id="editGarmentForm" enctype="multipart/form-data">
+            <input type="hidden" id="editId">
+        
+            <label>Item Name:</label>
+            <input type="text" id="editItemName" required>
+        
+            <label>Category:</label>
+            <select id="editCategory">
+                <option value="Dresses">Dresses</option>
+                <option value="Shirts">Shirts</option>
+                <option value="Pants">Pants</option>
+                <option value="Accessories">Accessories</option>
+            </select>
+        
+            <label>Size:</label>
+            <select id="editSize" name="size" required>
+                <option value="Extra Small">Extra Small</option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+                <option value="Extra Large">Extra Large</option>
+            </select>
+        
+            <label>Color:</label>
+            <input type="text" id="editColor" required>
+        
+            <label>Quantity:</label>
+            <input type="number" id="editQuantity" required>
+        
+            <label>Price:</label>
+            <input type="number" id="editPrice" required>
+        
+            <label>Cost Price:</label>
+            <input type="number" id="editCostPrice" required>
+        
+            <label>Supplier:</label>
+            <input type="text" id="editSupplier" required>
+        
+            <label>Location:</label>
+            <input type="text" id="editLocation" required>
+        
+            <label>Status:</label>
+            <select id="editStatus">
+                <option value="Available">Available</option>
+                <option value="Defective">Defective</option>
+            </select>
+        
+            <label>Image:</label>
+            <input type="file" id="editImage" accept="image/*">
+            <div id="currentImageContainer" style="margin-top: 10px;"></div>
+            
+            <div class="modal-buttons">
+                <button type="submit">Update</button>
+                <button type="button" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
 
-          </select><br>       
-    
-        <label>Color:</label>
-        <input type="text" id="editColor" required><br>
-    
-        <label>Quantity:</label>
-        <input type="number" id="editQuantity" required><br>
-    
-        <label>Price:</label>
-        <input type="number" id="editPrice" required><br>
-    
-        <label>Cost Price:</label>
-        <input type="number" id="editCostPrice" required><br>
-    
-        <label>Supplier:</label>
-        <input type="text" id="editSupplier" required><br>
-    
-        <label>Location:</label>
-        <input type="text" id="editLocation" required><br>
-    
-        <label>Status:</label>
-        <select id="editStatus">
-            <option value="Available">Available</option>
-            <option value="Defective">Defective</option>
-        </select><br>
-    
-        <label>Image:</label>
-        <input type="file" id="editImage" accept="image/*"><br><br>
-    
-        <button type="submit">Update</button>
-        <button type="button" onclick="closeEditModal()">Cancel</button>
-    </form>
-    
-</div>
-
+    <script src="js/menu-toggle.js"></script>
     <script src="js/inventory.js"></script>
     <script src="js/searchbar.js"></script>
     <script src="js/image.js"></script>

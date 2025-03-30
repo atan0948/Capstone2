@@ -1,0 +1,241 @@
+/* inventory.css - Mobile-First Responsive Styles */
+.page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.inventory-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.inventory-table {
+    width: 100%;
+    min-width: 0; /* Allows table to shrink below its minimum content size */
+}
+
+.table-header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-container {
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    table-layout: fixed; /* Helps with column width control */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-break: break-word; /* Ensures text wraps */
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.action-buttons button {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 60px;
+}
+
+.edit-btn {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.edit-btn:hover {
+    background-color: #e0a800;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Add New Garment Section */
+.add-new-garment {
+    width: 100%;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+}
+
+#addGarmentForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+}
+
+#addGarmentForm label {
+    font-weight: 500;
+    display: block;
+}
+
+#addGarmentForm input,
+#addGarmentForm select {
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+#addGarmentForm button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 5px;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+#editModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    width: 95%;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+#editGarmentForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    width: 100%;
+    padding: 10px;
+}
+
+/* Tablet and Desktop Styles */
+@media (min-width: 768px) {
+    .table-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    th, td {
+        padding: 10px;
+        font-size: 14px;
+    }
+    
+    .action-buttons {
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+    
+    .action-buttons button {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+    
+    .modal-buttons {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 992px) {
+    .page-content {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .inventory-table {
+        width: 70%;
+        padding-right: 20px;
+    }
+
+    .add-new-garment {
+        width: 30%;
+        position: sticky;
+        top: 20px;
+    }
+    
+    #addGarmentForm input,
+    #addGarmentForm select {
+        padding: 14px 12px;
+        font-size: 16px;
+    }
+    
+    #addGarmentForm button {
+        padding: 16px;
+        font-size: 16px;
+    }
+}

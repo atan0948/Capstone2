@@ -1,0 +1,89 @@
+header .search-bar {
+    display: flex;
+    width: 100%;
+    max-width: 350px;
+}
+
+header .search-bar input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+header .search-bar button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    background-color: #eee;
+    cursor: pointer;
+}
+
+.overview {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.metrics {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.metric {
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    flex: 1 1 200px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+}
+
+.metric .value {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.sales, .inventory-status {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #eee;
+}
+
+#inventoryChart {
+    max-height: 400px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .metrics {
+        flex-direction: column;
+    }
+    
+    th, td {
+        padding: 6px;
+        font-size: 14px;
+    }
+}
