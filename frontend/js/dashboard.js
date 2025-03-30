@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Logout functionality
     document.getElementById('logout').addEventListener('click', () => {
-        localStorage.removeItem('token');
+        localaStorage.removeItem('token');
         window.location.href = 'login.html';
     });
 
