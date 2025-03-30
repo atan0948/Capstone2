@@ -33,7 +33,7 @@
                 <li><a href="sales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li> 
             </ul>
             <div class="logout">
-                <label id ="logout">Log Out</label>
+                <a href="login.html" id="logout">Log Out</a>
             </div>
         </aside>
         <main class="content">
@@ -70,61 +70,13 @@
                 <canvas id="inventoryChart"></canvas>
             </section>
 
-            <section class="sales">
-                <h3>Sales</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Start Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Jacket</td>
-                            <td>500.00</td>
-                            <td>18-06-2024</td>
-                            <td>Processing</td>
-                            <td><a href="#">View Details</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="inventory-status">
-                <h3>Inventory Status</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Item Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Supplier</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>Jacket</td>
-                            <td>500.00</td>
-                            <td>1</td>
-                            <td>My Supplier</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
         </main>
     </div>
     <script src="js/menu-toggle.js"></script>
     <script src="js/script.js"></script>
     <script src="js/searchbar.js"></script>
-    <script src="js/dashboard.js"></script> <!-- New script for chart -->
+    <script src="js/dashboard.js"></script>
+    <script src="js/protectroute.js"></script>
 
 </body>
 </html>
