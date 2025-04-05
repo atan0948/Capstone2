@@ -3,12 +3,13 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authroutes');
 const garmentsRoutes = require('./routes/garmentroutes');
-const salesRoutes = require('./routes/sales'); 
-const garmentFileUpload = require('./routes/garment_fileupload'); // ✅ Renamed for clarity
+const salesRoutes = require('./routes/sales');
+const garmentFileUpload = require('./routes/garment_fileupload');
 const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 const records = require('./routes/records');
-const inventoryRoutes = require('./routes/inventory_chart'); // Ensure it's correctly imported
+const inventoryRoutes = require('./routes/inventory_chart'); // Existing inventory routes
+const inventoryExcelRoutes = require('./routes/excelformat'); // Excel export routes
 
 dotenv.config();
 const app = express();
@@ -38,7 +39,11 @@ app.use('/api', salesRoutes);
 
 app.use('/api/records', records);
 
+// ✅ Existing Inventory Routes
 app.use('/api/inventory', inventoryRoutes);
+
+// ✅ Route for exporting inventory report to Excel (corrected)
+app.use('/api/inventory', inventoryExcelRoutes); // Ensure this is correctly used as a router
 
 // ✅ Static file serving for uploads
 app.use('/uploads', express.static('uploads'));
@@ -73,7 +78,6 @@ app.get('/api/defects/today', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
-
 
 // ✅ Start the server
 const PORT = process.env.PORT || 3000;
