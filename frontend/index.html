@@ -6,6 +6,8 @@
     <title>Yaerinz Garments Automation System</title>
     <link rel="stylesheet" href="css/system.css">
     <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/metric.css">
+    <link rel="stylesheet" href="css/respon.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Added Chart.js -->
 </head>
@@ -15,8 +17,9 @@
             <i class="fas fa-bars"></i>
         </button>
         <div class="search-bar">
-            <input type="text" placeholder="Search Here">
-            <button><i class="fas fa-search"></i></button>
+            <input type="text" id="inventorySearch" placeholder="Search Inventory..." />
+            <button onclick="searchInventory()">Search</button>
+            <div id="searchResults"></div>
         </div>
     </div>
     <div class="container">
@@ -44,30 +47,53 @@
                 </div>
             </header>
 
-            <section class="overview">
-                <h2>Overview</h2>
-                <div class="metrics">
-                    <div class="metric">
-                        <p>Production Efficiency</p>
-                        <p class="value">100% Efficiency</p>
+            <div class="metrics">
+                <div class="metric alert-box" id="lowStockAlert">
+                    <div class="alert-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Low Stock Items</h3>
                     </div>
-                    <div class="metric">
-                        <p>Current Inventory</p>
-                        <p class="value">1 Units</p>
+                    <p class="value" id="lowStockCount">Loading...</p>
+                    <div class="alert-details">
+                        <span id="criticalItems">0 Critical</span>
+                        <span id="warningItems">0 Warning</span>
                     </div>
-                    <div class="metric">
-                        <p>Today's Defects</p>
-                        <p class="value" id="todayDefectCount">0</p>
-                    </div>
-                    <div class="metric">
-                        <p>Total Orders</p>
-                        <p class="value">1 Orders</p>
-                    </div>
+                
+                    <!-- ✅ New category details section -->
+                    <div id="lowStockCategoryDetails" class="category-details"></div>
+                
+                    <button class="view-btn" id="viewLowStockBtn">View All</button>
                 </div>
+                
+                
+                <!-- Other Metrics -->
+                <div class="metric">
+                    <i class="fas fa-boxes"></i>
+                    <p>Current Inventory</p>
+                    <p>Total Inventory: <span id="totalInventory">Loading...</span></p>
+                    <div id="categoryDetails"></div>
+                </div>
+                
+                <div class="metric">
+                    <i class="fas fa-times-circle"></i>
+                    <p>Today's Defects</p>
+                    <p class="value" id="todayDefectCount">0</p>
+                </div>
+                
+                <div class="metric">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>Total Orders</p>
+                    <p id="totalSalesOrders">Loading...</p>
+                </div>
+            </div>
 
-                <!-- Inventory Line Chart -->
-                <h3>Inventory Changes Over Time</h3>
-                <canvas id="inventoryChart"></canvas>
+            <section class="chart-section">
+                <div class="section-header">
+                    <h3>Inventory Changes Over Time</h3>
+                </div>
+                <div class="chart-container">
+                    <canvas id="inventoryChart"></canvas>
+                </div>
             </section>
 
         </main>

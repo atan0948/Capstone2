@@ -8,13 +8,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Logout functionality
     document.getElementById('logout').addEventListener('click', () => {
-        localaStorage.removeItem('token');
+        localStorage.removeItem('token');
         window.location.href = 'login.html';
     });
 
     // Fetch and display data
     fetchInventoryChanges();
     fetchTodayDefects();
+    fetchLowStockCount();
 });
 
 async function fetchInventoryChanges() {
@@ -86,3 +87,100 @@ function fetchTodayDefects() {
         })
         .catch(err => console.error('❌ Error fetching defect count:', err));
 }
+
+async function fetchLowStockCount() {
+    try {
+        const response = await fetch('http://localhost:3000/api/dashboard/low-stock');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const categories = data.categories ?? [];
+
+        // Total count from all categories
+        const total = categories.reduce((sum, cat) => sum + cat.count, 0);
+        document.getElementById('lowStockCount').textContent = total;
+
+        // Optional logic for warning/critical (you can customize this further)
+        const critical = total >= 10 ? 5 : total;
+        const warning = total - critical;
+
+        document.getElementById('criticalItems').textContent = `${critical} Critical`;
+        document.getElementById('warningItems').textContent = `${warning > 0 ? warning : 0} Warning`;
+
+        // ⬇️ Show category breakdown
+        const detailContainer = document.getElementById('lowStockCategoryDetails');
+        detailContainer.innerHTML = '';
+
+        categories.forEach(cat => {
+            const item = document.createElement('div');
+            item.classList.add('category-item');
+            item.textContent = `${cat.category}: ${cat.count}`;
+            detailContainer.appendChild(item);
+        });
+
+        console.log('📦 Low stock by category:', categories);
+    } catch (err) {
+        console.error('❌ Error fetching low stock count:', err);
+        document.getElementById('lowStockCount').textContent = 'Error';
+    }
+}
+
+async function fetchTotalSalesOrders() {
+    try {
+        const response = await fetch('http://localhost:3000/api/sales/total-orders');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        document.getElementById('totalSalesOrders').textContent = data.total;
+        console.log("🧾 Total sales orders:", data.total);
+    } catch (err) {
+        console.error('❌ Error fetching total sales orders:', err);
+        document.getElementById('totalSalesOrders').textContent = 'Error';
+    }
+}
+
+fetchTotalSalesOrders();
+
+// dashboard.js
+
+async function fetchInventoryOverview() {
+    try {
+        const response = await fetch('http://localhost:3000/api/inventory/current');
+        const data = await response.json();
+
+        if (data) {
+            const totalQuantity = data.totalQuantity;
+            const categories = data.categories;
+
+            // Update total inventory
+            document.getElementById('totalInventory').textContent = totalQuantity;
+
+            // Display categories and quantities
+            const categoryDetails = document.getElementById('categoryDetails');
+            categoryDetails.innerHTML = ''; // Clear previous data
+            categories.forEach(category => {
+                const categoryItem = document.createElement('div');
+                categoryItem.classList.add('category-item');
+                categoryItem.textContent = `${category.category}: ${category.category_quantity}`;
+                categoryDetails.appendChild(categoryItem);
+            });
+
+            console.log("Inventory overview fetched and displayed.");
+        } else {
+            console.error("Failed to fetch inventory data.");
+        }
+    } catch (error) {
+        console.error('Error fetching inventory overview:', error);
+        document.getElementById('totalInventory').textContent = 'Error';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetchInventoryOverview(); // Call this function when the page loads
+});

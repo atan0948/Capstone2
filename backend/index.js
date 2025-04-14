@@ -8,8 +8,11 @@ const garmentFileUpload = require('./routes/garment_fileupload');
 const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 const records = require('./routes/records');
-const inventoryRoutes = require('./routes/inventory_chart'); // Existing inventory routes
-const inventoryExcelRoutes = require('./routes/excelformat'); // Excel export routes
+const lowStockCount = require('./routes/dash');
+const inventoryRoutes = require('./routes/inventory');
+const inventoryChartRoutes = require('./routes/inventory_chart');
+const inventoryExcelRoutes = require('./routes/excelformat');
+
 
 dotenv.config();
 const app = express();
@@ -35,12 +38,16 @@ app.use('/api/garments', garmentsRoutes);
 app.use('/api/garments/upload', garmentFileUpload); // ✅ Moved to `/api/garments/upload`
 
 // ✅ Sales routes
-app.use('/api', salesRoutes);
+app.use('/api/sales', require('./routes/sales'));      // ✅ Handles /total-orders
+app.use('/api/dashboard', require('./routes/dash'));   // ✅ Handles /low-stock
 
 app.use('/api/records', records);
 
 // ✅ Existing Inventory Routes
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/inventory', inventoryChartRoutes);
+app.use('/api/inventory', inventoryExcelRoutes);
+
 
 // ✅ Route for exporting inventory report to Excel (corrected)
 app.use('/api/inventory', inventoryExcelRoutes); // Ensure this is correctly used as a router

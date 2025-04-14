@@ -44,7 +44,7 @@ router.post('/sales', async (req, res) => {
 });
 
 // ✅ Get all sales with item details
-router.get('/sales', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const [sales] = await db.execute(`
             SELECT 
@@ -67,5 +67,35 @@ router.get('/sales', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
+
+// ✅ Route to get total number of sales orders
+router.get('/total-orders', async (req, res) => {
+    try {
+        const [result] = await db.query('SELECT COUNT(*) AS total FROM sales');
+        res.json({ total: result[0].total });
+    } catch (error) {
+        console.error('❌ Error fetching total sales orders:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// routes/sales.js
+router.get('/search', async (req, res) => {
+    const { query } = req.query; // Getting the query parameter from the URL
+
+    try {
+        const [results] = await db.execute(`
+            SELECT s.id, s.item_name, s.quantity, s.sale_date, s.total_price
+            FROM sales s
+            WHERE s.item_name LIKE ? OR s.sale_date LIKE ?
+        `, [`%${query}%`, `%${query}%`]);
+
+        res.json(results);
+    } catch (err) {
+        console.error('Error searching sales records:', err);
+        res.status(500).json({ error: 'Failed to search sales records.' });
+    }
+});
+
 
 module.exports = router;
