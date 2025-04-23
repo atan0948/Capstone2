@@ -27,6 +27,7 @@ async function fetchInventoryChanges() {
         }
 
         const data = await response.json();
+        console.log("🐞 Inventory Changes Data:", data);
 
         if (!data.length) {
             console.warn("⚠️ No inventory data found.");
@@ -34,8 +35,8 @@ async function fetchInventoryChanges() {
             return;
         }
 
-        const labels = data.map(entry => entry.date);
-        const quantities = data.map(entry => entry.total_quantity);
+        const labels = data.map(entry => new Date(entry.date_added).toLocaleDateString());
+        const quantities = data.map(entry => entry.quantity);        
 
         renderInventoryChart(labels, quantities);
     } catch (error) {
@@ -43,35 +44,44 @@ async function fetchInventoryChanges() {
     }
 }
 
+let inventoryChartInstance = null;
+
 function renderInventoryChart(labels, quantities) {
     const ctx = document.getElementById("inventoryChart").getContext("2d");
 
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: labels.length ? labels : ["No Data"],
-            datasets: [{
-                label: "Inventory Over Time",
-                data: quantities.length ? quantities : [0],
-                borderColor: "#3498db",
-                backgroundColor: "rgba(52, 152, 219, 0.2)",
-                borderWidth: 2,
-                fill: true,
-                pointBackgroundColor: "#2980b9",
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { title: { display: true, text: "Date" } },
-                y: { title: { display: true, text: "Total Quantity" } }
+    if (inventoryChartInstance) {
+        inventoryChartInstance.data.labels = labels;
+        inventoryChartInstance.data.datasets[0].data = quantities;
+        inventoryChartInstance.update();
+    } else {
+        inventoryChartInstance = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Inventory Over Time",
+                    data: quantities,
+                    borderColor: "#3498db",
+                    backgroundColor: "rgba(52, 152, 219, 0.2)",
+                    borderWidth: 2,
+                    fill: true,
+                    pointBackgroundColor: "#2980b9",
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: "Date" } },
+                    y: { title: { display: true, text: "Total Quantity" } }
+                }
             }
-        }
-    });
+        });
+    }
 
     console.log("📊 Inventory chart updated successfully.");
 }
+
 
 function fetchTodayDefects() {
     fetch('http://localhost:3000/api/defects/today', {
