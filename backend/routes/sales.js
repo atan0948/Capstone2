@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../database/db'); // Your DB connection
 
 // ✅ Add a sale and deduct inventory   
-router.post('/sales', async (req, res) => {
+router.post('/', async (req, res) => {
     const { item_id, quantity_sold, payment_type, customer_name } = req.body;
 
     if (!item_id || !quantity_sold || quantity_sold <= 0) {
