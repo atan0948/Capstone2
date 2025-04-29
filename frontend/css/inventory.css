@@ -7,45 +7,20 @@
     overflow-x: hidden;
 }
 
-.inventory-container {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.inventory-table {
-    width: 100%;
-    min-width: 0; /* Allows table to shrink below its minimum content size */
-}
-
-.table-header {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.search-container {
-    width: 100%;
-}
-
 table {
-    border-collapse: collapse;
     width: 100%;
-    margin-top: 20px;
-    table-layout: fixed; /* Helps with column width control */
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
 th, td {
+    padding: 10px;
     border: 1px solid #ddd;
-    padding: 8px;
     text-align: left;
-    word-break: break-word; /* Ensures text wraps */
 }
 
 th {
     background-color: #f2f2f2;
-    font-weight: 600;
 }
 
 tr:nth-child(even) {
@@ -59,38 +34,47 @@ tr:hover {
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 8px; /* Increased gap for better spacing */
+    justify-content: flex-start; /* Align buttons to the start */
 }
 
 .action-buttons button {
-    padding: 6px 8px;
+    padding: 8px 12px; /* Slightly increased padding */
     border: none;
-    border-radius: 3px;
+    border-radius: 5px; /* More rounded corners */
     cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s;
-    flex: 1;
-    min-width: 60px;
+    font-size: 14px; /* Slightly larger font size */
+    transition: opacity 0.2s ease-in-out; /* Smooth hover effect */
+    flex-shrink: 0;
+    min-width: 70px; /* Slightly wider buttons */
+    text-align: center; /* Center the text within the button */
+}
+
+.action-buttons button:hover {
+    opacity: 0.8; /* Slightly fade on hover */
 }
 
 .edit-btn {
-    background-color: #ffc107;
-    color: #212529;
+    background-color: #28a745; /* Success/Edit color */
+    color: white;
+    border: 1px solid #28a745; /* Add a subtle border */
 }
 
 .edit-btn:hover {
-    background-color: #e0a800;
+    background-color: #218838; /* Darker shade on hover */
+    border-color: #1e7e34;
 }
 
 .delete-btn {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Danger/Delete color */
     color: white;
+    border: 1px solid #dc3545; /* Add a subtle border */
 }
 
 .delete-btn:hover {
-    background-color: #c82333;
+    background-color: #c82333; /* Darker shade on hover */
+    border-color: #bd2130;
 }
-
 /* Add New Garment Section */
 .add-new-garment {
     width: 100%;
@@ -104,7 +88,7 @@ tr:hover {
 #addGarmentForm {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 7px;
     width: 100%;
 }
 
@@ -133,7 +117,7 @@ tr:hover {
     font-weight: 500;
     margin-top: 5px;
     width: 100%;
-    font-size: 14px;
+    font-size: 11px;
 }
 
 /* Modal Styles */
@@ -160,7 +144,7 @@ tr:hover {
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     z-index: 1000;
     width: 95%;
-    max-width: 100%;
+    max-width: 600px; /* Adjust maximum width for the modal */
     max-height: 90vh;
     overflow-y: auto;
 }
@@ -190,22 +174,22 @@ tr:hover {
         justify-content: space-between;
         align-items: center;
     }
-    
+
     th, td {
         padding: 10px;
         font-size: 14px;
     }
-    
+
     .action-buttons {
         flex-wrap: nowrap;
         gap: 8px;
     }
-    
+
     .action-buttons button {
         padding: 8px 12px;
         font-size: 14px;
     }
-    
+
     .modal-buttons {
         flex-direction: row;
     }
@@ -216,24 +200,29 @@ tr:hover {
         flex-direction: row;
         align-items: flex-start;
     }
-    
+
     .inventory-table {
-        width: 70%;
-        padding-right: 20px;
+        width: 0; /* Reset the width */
+        flex-grow: 1; /* Allow it to take up available space */
+        padding-right: 20px; /* Keep the right padding */
+    }
+
+    .inventory-table-scroll-wrapper { /* Maintain vertical scroll on desktop */
+        max-height: 80vh; /* Adjust as needed for desktop */
     }
 
     .add-new-garment {
-        width: 30%;
+        width: 25%; /* Slightly smaller width */
         position: sticky;
         top: 20px;
     }
-    
+
     #addGarmentForm input,
     #addGarmentForm select {
         padding: 14px 12px;
         font-size: 16px;
     }
-    
+
     #addGarmentForm button {
         padding: 16px;
         font-size: 16px;

@@ -1,42 +1,54 @@
-//Search Bar Script
-document.addEventListener('DOMContentLoaded', function() {
-    function searchTable() {
-        const input = document.querySelector('.search-bar input');
-        const filter = input.value.toUpperCase();
-        const tables = document.querySelectorAll('table');
+// Search inventory
+async function searchInventory() {
+    const query = document.getElementById('inventorySearch').value;
 
-        tables.forEach(table => {
-            const rows = table.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                let found = false;
-                cells.forEach(cell => {
-                    if (cell.textContent.toUpperCase().includes(filter)) {
-                        found = true;
-                    }
-                });
-                if (found) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        });
+    try {
+        const response = await fetch(`/api/inventory/search?query=${query}`);
+        const data = await response.json();
+        displayResults(data, 'inventory');
+    } catch (err) {
+        console.error('Error searching inventory:', err);
+    }
+}
+
+// Search sales
+async function searchSales() {
+    const query = document.getElementById('salesSearch').value;
+
+    try {
+        const response = await fetch(`/api/sales/search?query=${query}`);
+        const data = await response.json();
+        displayResults(data, 'sales');
+    } catch (err) {
+        console.error('Error searching sales:', err);
+    }
+}
+
+// Function to display results
+function displayResults(data, type) {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = ''; // Clear previous results
+
+    if (data.length === 0) {
+        resultsContainer.innerHTML = `<p>No ${type} found matching the search term.</p>`;
+        return;
     }
 
-    const searchButton = document.querySelector('.search-bar button');
-    if (searchButton) {  
-      searchButton.addEventListener('click', searchTable);
-    }
+    const table = document.createElement('table');
+    const header = type === 'inventory' ? 
+        '<tr><th>Item Name</th><th>Category</th><th>Quantity</th><th>Price</th></tr>' : 
+        '<tr><th>Item Name</th><th>Quantity</th><th>Sale Date</th><th>Total Price</th></tr>';
+    table.innerHTML = header;
 
+    data.forEach(item => {
+        const row = document.createElement('tr');
+        if (type === 'inventory') {
+            row.innerHTML = `<td>${item.item_name}</td><td>${item.category}</td><td>${item.quantity}</td><td>${item.price}</td>`;
+        } else {
+            row.innerHTML = `<td>${item.item_name}</td><td>${item.quantity}</td><td>${item.sale_date}</td><td>${item.total_price}</td>`;
+        }
+        table.appendChild(row);
+    });
 
-    const searchInput = document.querySelector('.search-bar input');
-    if (searchInput) { 
-      searchInput.addEventListener('keyup', function(event) {
-          if (event.key === 'Enter') {
-              searchTable();
-          }
-      });
-    }
-
-});
+    resultsContainer.appendChild(table);
+}

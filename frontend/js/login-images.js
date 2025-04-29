@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Image Cycling
     const productImage = document.getElementById('productImage');
     const imageArray = [
-        'images/prod1.png',
-        'images/prod2.png',
-        'images/prod3.png'
+        'Images/prod1.png',
+        'Images/prod2.png',
+        'Images/prod3.png'
     ];
     let currentImageIndex = 0;
     const dots = document.querySelectorAll('.dot');

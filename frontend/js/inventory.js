@@ -184,3 +184,14 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
         console.error(err);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const filter = params.get('filter');
+
+    if (filter === 'low-stock') {
+        fetchAndRenderLowStockItems();
+    } else {
+        fetchAndRenderAllInventory();
+    }
+});
