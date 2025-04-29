@@ -78,7 +78,8 @@ tr:hover {
 
 /* Add New Garment Section */
 .add-new-garment {
-    width: 100%;
+    width:100%;
+    overflow: visible;
     padding: 15px;
     background: var(--light-bg); /* Apply light background color from theme */
     border-radius: 8px;
@@ -261,7 +262,6 @@ tr:hover {
 
     .add-new-garment {
         width: 25%; /* Slightly smaller width */
-        position: sticky;
         top: 20px;
     }
 

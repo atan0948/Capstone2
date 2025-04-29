@@ -14,7 +14,7 @@
       background-color: var(--light-bg);
       display: flex;
       min-height: 100vh;
-      overflow-y: hidden; /* Allow vertical scroll for the whole body if needed */.
+      overflow-y: auto; /* Allow vertical scroll for the whole body if needed */.
   }
   .logo p{
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
@@ -29,6 +29,8 @@
       display: flex;
       width: 100%;
       min-height: 100vh;
+      position: fixed;
+      height: 100%;
   }
   
   .sidebar {
