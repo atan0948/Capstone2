@@ -11,9 +11,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     form.addEventListener("submit", async function (event) {
         event.preventDefault();
-        
+
         const formData = new FormData(this);
-        
+
         if (!formData.get("item_name")) {
             alert("Item Name is required!");
             return;
@@ -30,13 +30,25 @@ document.addEventListener("DOMContentLoaded", function () {
             if (response.ok) {
                 alert("Garment added successfully!");
                 this.reset();
-                fetchGarments(); // ✅ Refresh table after adding
+                fetchGarments();
             } else {
                 alert(result.error);
             }
         } catch (error) {
             console.error("❌ Fetch error:", error);
             alert("Failed to add garment.");
+        }
+    });
+
+    // Event listener for filtering
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+        const filter = params.get('filter');
+
+        if (filter === 'low-stock') {
+            fetchAndRenderLowStockItems();
+        } else {
+            fetchAndRenderAllInventory();
         }
     });
 });
@@ -52,18 +64,23 @@ async function fetchGarments() {
 
         const garments = await response.json();
         console.log("Garments:", garments);
-        displayGarments(garments);
+        renderInventoryTable(garments, document.getElementById('inventoryTableBody')); // Pass the table body
     } catch (error) {
         console.error('Error fetching inventory:', error);
     }
 }
 
-function displayGarments(garments) {
-    const tableBody = document.getElementById('inventoryTableBody');
-    tableBody.innerHTML = ''; // Clear previous data
+/**
+ * Renders the inventory table.
+ *
+ * @param {Array} garments - An array of garment objects.
+ * @param {HTMLElement} tableBody - The <tbody> element of the table.
+ */
+function renderInventoryTable(garments, tableBody) {
+    tableBody.innerHTML = '';
 
     if (!garments || garments.length === 0) {
-        console.warn("⚠ No garments found.");
+        tableBody.innerHTML = '<tr><td colspan="13" style="text-align: center;">No garments found.</td></tr>';
         return;
     }
 
@@ -89,13 +106,80 @@ function displayGarments(garments) {
                 width="50" height="50" style="object-fit: cover; border-radius: 5px;">
             </td>
             <td>
-                <button onclick="editGarment(${garment.id}, '${garment.item_name}', '${garment.category}', '${garment.size}', '${garment.color}', ${garment.quantity}, ${price}, ${cost_price}, '${garment.supplier}', '${garment.location}', '${garment.image_url}')" class="editbtn">Edit</button>
-                <button onclick="deleteGarment(${garment.id})" class="deletebtn">Delete</button>
+                <button class="edit-btn-${garment.id}" style="${getButtonStyle('edit')}">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="delete-btn-${garment.id}" style="${getButtonStyle('delete')}">
+                    <i class="fas fa-trash-alt"></i> Delete
+                </button>
             </td>
         `;
         tableBody.appendChild(row);
+
+        // Add event listeners and inline styles.
+        const editButton = document.querySelector(`.edit-btn-${garment.id}`);
+        const deleteButton = document.querySelector(`.delete-btn-${garment.id}`);
+
+        if (editButton) {
+            editButton.addEventListener('click', () => {
+                editGarment(garment.id, garment.item_name, garment.category, garment.size, garment.color, garment.quantity, price, cost_price, garment.supplier, garment.location, garment.image_url);
+            });
+            // Apply hover effect using JavaScript
+            editButton.addEventListener('mouseover', () => {
+                editButton.style.backgroundColor = '#218838';
+            });
+            editButton.addEventListener('mouseout', () => {
+                editButton.style.backgroundColor = '#28a745';
+            });
+        }
+
+        if (deleteButton) {
+            deleteButton.addEventListener('click', () => {
+                deleteGarment(garment.id);
+            });
+            // Apply hover effect using JavaScript
+            deleteButton.addEventListener('mouseover', () => {
+                deleteButton.style.backgroundColor = '#c82333';
+            });
+            deleteButton.addEventListener('mouseout', () => {
+                deleteButton.style.backgroundColor = '#dc3545';
+            });
+        }
     });
     console.log("✅ Table updated successfully.");
+}
+
+/**
+ * Returns a string of CSS styles for the buttons.
+ *
+ * @param {string} type - The type of button ('edit' or 'delete').
+ * @returns {string} - A string of CSS styles.
+ */
+function getButtonStyle(type) {
+    const baseStyles = `
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    `;
+
+    if (type === 'edit') {
+        return baseStyles + `
+            background-color: #28a745;
+            color: white;
+        `;
+    } else if (type === 'delete') {
+        return baseStyles + `
+            background-color: #dc3545;
+            color: white;
+        `;
+    }
+    return baseStyles;
 }
 
 window.deleteGarment = async function (id) {
@@ -114,7 +198,7 @@ window.deleteGarment = async function (id) {
 
         if (response.ok) {
             alert("Garment deleted successfully!");
-            fetchGarments(); // ✅ Refresh the inventory
+            fetchGarments();
         } else {
             console.error("❌ Error deleting garment:", result);
             alert("Failed to delete garment.");
@@ -131,7 +215,7 @@ window.editGarment = function (
     document.getElementById("editId").value = id;
     document.getElementById("editItemName").value = item_name;
     document.getElementById("editCategory").value = category;
-    document.getElementById("editSize").value = size; // ✅ This will work fine for a <select>
+    document.getElementById("editSize").value = size;
     document.getElementById("editColor").value = color;
     document.getElementById("editQuantity").value = quantity;
     document.getElementById("editPrice").value = price;
@@ -174,24 +258,49 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
         method: 'PUT',
         body: formData
     })
-    .then(response => response.json())
-    .then(data => {
-        alert('Garment updated successfully!');
-        location.reload();
-    })
-    .catch(err => {
-        alert('Error updating garment: ' + err.message);
-        console.error(err);
-    });
+        .then(response => response.json())
+        .then(data => {
+            alert('Garment updated successfully!');
+            location.reload();
+        })
+        .catch(err => {
+            alert('Error updating garment: ' + err.message);
+            console.error(err);
+        });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const params = new URLSearchParams(window.location.search);
-    const filter = params.get('filter');
+async function fetchAndRenderLowStockItems() {
+    try {
+        console.log("Fetching low stock garments...");
+        const response = await fetch('http://localhost:3000/api/garments/low-stock', {
+            headers: { 'Authorization': localStorage.getItem('token') }
+        });
 
-    if (filter === 'low-stock') {
-        fetchAndRenderLowStockItems();
-    } else {
-        fetchAndRenderAllInventory();
+        if (!response.ok) throw new Error(`Failed to fetch low stock items: ${response.statusText}`);
+
+        const garments = await response.json();
+        console.log("Low Stock Garments:", garments);
+        renderInventoryTable(garments, document.getElementById('inventoryTableBody'));
+    } catch (error) {
+        console.error('Error fetching low stock inventory:', error);
+        alert('Failed to fetch low stock items.');
     }
-});
+}
+
+async function fetchAndRenderAllInventory() {
+    try {
+        console.log("Fetching all inventory garments...");
+        const response = await fetch('http://localhost:3000/api/garments', {
+            headers: { 'Authorization': localStorage.getItem('token') }
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch inventory: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Inventory data:", data);
+        renderInventoryTable(data, document.getElementById('inventoryTableBody'));
+    } catch (error) {
+        console.error("Error fetching all inventory:", error);
+        alert('Failed to fetch inventory.');
+    }
+}
