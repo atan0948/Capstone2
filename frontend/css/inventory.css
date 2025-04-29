@@ -16,7 +16,7 @@ table {
 
 th, td {
     padding: 10px;
-    border: 1px solid var(--primary); /* Apply secondary color for border */
+    border: 1px solid var(--primary); /* Apply primary color for border */
     text-align: left;
 }
 
@@ -35,48 +35,45 @@ tr:hover {
 
 .action-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px; /* Increased gap for better spacing */
+    flex-wrap: nowrap; /* Prevent buttons from wrapping to the next line */
+    gap: 5px; /* Slightly reduced gap for a tighter look */
     justify-content: flex-start; /* Align buttons to the start */
 }
 
 .action-buttons button {
-    padding: 8px 12px; /* Slightly increased padding */
+    padding: 6px 10px; /* Slightly smaller padding */
     border: none;
-    border-radius: 5px; /* More rounded corners */
+    border-radius: 4px; /* Slightly less rounded corners */
     cursor: pointer;
-    font-size: 14px; /* Slightly larger font size */
-    transition: opacity 0.2s ease-in-out; /* Smooth hover effect */
+    font-size: 0.9em; /* Slightly smaller font size */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
     flex-shrink: 0;
-    min-width: 70px; /* Slightly wider buttons */
-    text-align: center; /* Center the text within the button */
-    color: var(--text-light); /* Apply light text color from theme */
+    min-width: auto; /* Adjust width based on content */
+    text-align: center; /* Center the text */
 }
 
 .action-buttons button:hover {
-    opacity: 0.8; /* Slightly fade on hover */
+    opacity: 0.9; /* Slightly less fade on hover */
 }
 
 .edit-btn {
-    background-color: var(--primary); /* Apply primary color for edit button */
-    color: var(--text-light); /* Apply light text color from theme */
-    border: 1px solid var(--primary); /* Apply primary color for border */
+    background-color: var(--secondary); /* Use secondary for edit */
+    color: var(--text-dark);
 }
 
 .edit-btn:hover {
-    background-color: #218838; /* Keep original hover color */
-    border-color: #1e7e34; /* Keep original hover border color */
+    background-color: var(--highlight); /* Highlight on hover */
+    color: var(--text-dark);
 }
 
 .delete-btn {
-    background-color: var(--accent); /* Apply accent color for delete button */
-    color: var(--text-light); /* Apply light text color from theme */
-    border: 1px solid var(--accent); /* Apply accent color for border */
+    background-color: var(--accent); /* Use accent for delete */
+    color: var(--text-light);
 }
 
 .delete-btn:hover {
     background-color: #c82333; /* Keep original hover color */
-    border-color: #bd2130; /* Keep original hover border color */
+    color: var(--text-light);
 }
 
 /* Add New Garment Section */
@@ -164,26 +161,58 @@ tr:hover {
     gap: 12px;
 }
 
+#editGarmentForm label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+#editGarmentForm input[type="text"],
+#editGarmentForm input[type="number"],
+#editGarmentForm select {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: var(--text-dark);
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
 .modal-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 15px;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end; /* Align buttons to the right */
 }
 
 .modal-buttons button {
-    width: 100%;
-    padding: 10px;
-    color: var(--text-light); /* Apply light text color from theme */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
 }
 
-.modal-buttons button:first-child { /* Style for the "Save" or primary action button */
-    background-color: var(--primary); /* Apply primary color from theme */
+.modal-buttons button:first-child { /* Style for the "Save" button */
+    background-color: var(--primary);
+    color: var(--text-light);
 }
 
-.modal-buttons button:last-child { /* Style for the "Cancel" or secondary action button */
-    background-color: var(--secondary); /* Apply secondary color from theme */
-    color: var(--text-dark); /* Apply text color from theme */
+.modal-buttons button:first-child:hover {
+    background-color: #547a71; /* Darker shade of primary */
+}
+
+.modal-buttons button:last-child { /* Style for the "Cancel" button */
+    background-color: var(--secondary);
+    color: var(--text-dark);
+}
+
+.modal-buttons button:last-child:hover {
+    background-color: #96a983; /* Lighter shade of secondary */
 }
 
 /* Tablet and Desktop Styles */
