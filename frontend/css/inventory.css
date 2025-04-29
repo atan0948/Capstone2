@@ -5,6 +5,7 @@
     gap: 20px;
     width: 100%;
     overflow-x: hidden;
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 table {
@@ -15,20 +16,21 @@ table {
 
 th, td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--primary); /* Apply secondary color for border */
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: var(--secondary); /* Apply secondary color for header background */
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: var(--light-bg); /* Apply light background color from theme */
 }
 
 tr:hover {
-    background-color: #f1f1f1;
+    background-color: var(--highlight); /* Apply highlight color from theme */
 }
 
 .action-buttons {
@@ -48,6 +50,7 @@ tr:hover {
     flex-shrink: 0;
     min-width: 70px; /* Slightly wider buttons */
     text-align: center; /* Center the text within the button */
+    color: var(--text-light); /* Apply light text color from theme */
 }
 
 .action-buttons button:hover {
@@ -55,34 +58,36 @@ tr:hover {
 }
 
 .edit-btn {
-    background-color: #28a745; /* Success/Edit color */
-    color: white;
-    border: 1px solid #28a745; /* Add a subtle border */
+    background-color: var(--primary); /* Apply primary color for edit button */
+    color: var(--text-light); /* Apply light text color from theme */
+    border: 1px solid var(--primary); /* Apply primary color for border */
 }
 
 .edit-btn:hover {
-    background-color: #218838; /* Darker shade on hover */
-    border-color: #1e7e34;
+    background-color: #218838; /* Keep original hover color */
+    border-color: #1e7e34; /* Keep original hover border color */
 }
 
 .delete-btn {
-    background-color: #dc3545; /* Danger/Delete color */
-    color: white;
-    border: 1px solid #dc3545; /* Add a subtle border */
+    background-color: var(--accent); /* Apply accent color for delete button */
+    color: var(--text-light); /* Apply light text color from theme */
+    border: 1px solid var(--accent); /* Apply accent color for border */
 }
 
 .delete-btn:hover {
-    background-color: #c82333; /* Darker shade on hover */
-    border-color: #bd2130;
+    background-color: #c82333; /* Keep original hover color */
+    border-color: #bd2130; /* Keep original hover border color */
 }
+
 /* Add New Garment Section */
 .add-new-garment {
     width: 100%;
     padding: 15px;
-    background: #f8f9fa;
+    background: var(--light-bg); /* Apply light background color from theme */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     box-sizing: border-box;
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 #addGarmentForm {
@@ -95,21 +100,24 @@ tr:hover {
 #addGarmentForm label {
     font-weight: 500;
     display: block;
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 #addGarmentForm input,
 #addGarmentForm select {
     padding: 12px;
-    border: 1px solid #ced4da;
+    border: 1px solid #ced4da; /* Keep original border color */
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box;
     font-size: 14px;
+    color: var(--text-dark); /* Apply text color from theme */
+    background-color: #fff; /* Ensure white background for input */
 }
 
 #addGarmentForm button {
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary); /* Apply primary color for button */
+    color: var(--text-light); /* Apply light text color from theme */
     padding: 12px;
     border: none;
     border-radius: 4px;
@@ -138,7 +146,7 @@ tr:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: white;
+    background: var(--light-bg); /* Apply light background color from theme */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -147,6 +155,7 @@ tr:hover {
     max-width: 600px; /* Adjust maximum width for the modal */
     max-height: 90vh;
     overflow-y: auto;
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 #editGarmentForm {
@@ -165,6 +174,16 @@ tr:hover {
 .modal-buttons button {
     width: 100%;
     padding: 10px;
+    color: var(--text-light); /* Apply light text color from theme */
+}
+
+.modal-buttons button:first-child { /* Style for the "Save" or primary action button */
+    background-color: var(--primary); /* Apply primary color from theme */
+}
+
+.modal-buttons button:last-child { /* Style for the "Cancel" or secondary action button */
+    background-color: var(--secondary); /* Apply secondary color from theme */
+    color: var(--text-dark); /* Apply text color from theme */
 }
 
 /* Tablet and Desktop Styles */

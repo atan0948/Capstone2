@@ -2,6 +2,7 @@
 .page-content {
     width: 100%;
     padding: 15px;
+    color: var(--text-dark);
 }
 
 .sales-layout {
@@ -32,7 +33,7 @@
     gap: 15px;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: #f8f9fa;
+    background-color: var(--light-bg);
     border-radius: 8px;
 }
 
@@ -46,12 +47,14 @@
     border: 1px solid #ced4da;
     border-radius: 4px;
     width: 100%;
+    color: var(--text-dark);
+    background-color: #fff;
 }
 
 #salesForm button {
     padding: 12px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-light);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -59,12 +62,13 @@
 }
 
 #salesForm button:hover {
-    background-color: #0069d9;
+    background-color: #0069d9; /* Darker shade (adjust as needed) */
 }
 
 #salesError {
     margin-top: -10px;
     margin-bottom: 0;
+    color: red; /* Keep error color */
 }
 
 table {
@@ -76,125 +80,19 @@ table {
 
 th, td {
     padding: 8px 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--primary);
     text-align: left;
     white-space: nowrap;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: var(--secondary);
+    color: var(--text-dark);
     position: sticky;
     top: 0;
 }
 
 /* Quick Sale Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: fadeIn 0.3s ease;
-}
-
-.close-btn {
-    float: right;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #333;
-}
-
-.open-btn {
-    margin-top: 20px;
-    padding: 10px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    width: 100%;
-}
-
-.open-btn:hover {
-    background-color: #0056b3;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .sales-layout {
-        flex-direction: column;
-    }
-    
-    .sales-table-container,
-    .sales-form-container {
-        flex: 1 1 100%;
-        width: 100%;
-    }
-    
-    th, td {
-        padding: 6px 8px;
-        font-size: 0.8em;
-    }
-    
-    #salesForm {
-        padding: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    th, td {
-        padding: 4px 6px;
-        font-size: 0.7em;
-    }
-    
-    #salesForm input,
-    #salesForm select {
-        padding: 8px;
-    }
-    
-    #salesForm button {
-        padding: 10px;
-    }
-}
-.open-btn {
-    margin: 20px auto;
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: block;
-    width: auto;
-    max-width: 120px;
-}
-
-.open-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-    transition: transform 0.2s ease;
-}
-
-/* Quick Sale Modal (General Styling) */
 .modal {
     display: none;
     position: fixed;
@@ -211,14 +109,16 @@ th {
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: var(--light-bg);
+    margin: 5% auto;
     padding: 20px;
     border-radius: 8px;
-    width: 100%; /* Make modal content take full width of modal */
-    max-width: 500px; /* Increase max-width to accommodate content */
+    width: 90%;
+    max-width: 400px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     animation: fadeIn 0.3s ease;
     box-sizing: border-box; /* Include padding in width/height calculations */
+    color: var(--text-dark);
 }
 
 .close-btn {
@@ -226,7 +126,26 @@ th {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    color: #333;
+    color: #333; /* Keep close button dark */
+}
+
+.open-btn {
+    margin: 20px auto;
+    padding: 8px 16px;
+    background-color: var(--primary);
+    color: var(--text-light);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    width: auto;
+    max-width: 120px;
+}
+
+.open-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
 }
 
 /* Form Specific Styling */
@@ -254,12 +173,14 @@ th {
     border-radius: 4px;
     width: 100%;
     box-sizing: border-box; /* Include padding in width/height calculations */
+    color: var(--text-dark);
+    background-color: #fff;
 }
 
 #quickSaleForm button {
     padding: 12px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--primary);
+    color: var(--text-light);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -278,4 +199,42 @@ th {
 @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sales-layout {
+        flex-direction: column;
+    }
+
+    .sales-table-container,
+    .sales-form-container {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 6px 8px;
+        font-size: 0.8em;
+    }
+
+    #salesForm {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    th, td {
+        padding: 4px 6px;
+        font-size: 0.7em;
+    }
+
+    #salesForm input,
+    #salesForm select {
+        padding: 8px;
+    }
+
+    #salesForm button {
+        padding: 10px;
+    }
 }

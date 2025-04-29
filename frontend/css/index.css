@@ -9,6 +9,8 @@ header .search-bar input {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
+    color: var(--text-dark);
+    background-color: #fff;
 }
 
 header .search-bar button {
@@ -16,17 +18,19 @@ header .search-bar button {
     border: 1px solid #ccc;
     border-left: none;
     border-radius: 0 4px 4px 0;
-    background-color: #eee;
+    background-color: var(--secondary); /* Use secondary for search button */
+    color: var(--text-dark);
     cursor: pointer;
 }
 
 .overview {
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--secondary); /* Use secondary for border */
     padding: 20px;
     border-radius: 8px;
-    background-color: #fff;
+    background-color: var(--light-bg); /* Light background */
     box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    color: var(--text-dark);
 }
 
 .metrics {
@@ -38,10 +42,11 @@ header .search-bar button {
 
 .metric {
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid var(--secondary); /* Secondary border */
     padding: 15px;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: var(--highlight); /* Use highlight for metric boxes */
+    color: var(--text-dark);
     flex: 1 1 200px;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
@@ -50,6 +55,7 @@ header .search-bar button {
     font-weight: bold;
     font-size: 1.2em;
     margin-top: 10px;
+    color: var(--primary); /* Primary color for the value */
 }
 
 .sales, .inventory-status {
@@ -64,12 +70,14 @@ table {
 
 th, td {
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--secondary); /* Secondary border for table cells */
     text-align: left;
+    color: var(--text-dark);
 }
 
 th {
-    background-color: #eee;
+    background-color: var(--secondary); /* Secondary background for table headers */
+    color: var(--text-dark);
 }
 
 #inventoryChart {
@@ -81,7 +89,7 @@ th {
     .metrics {
         flex-direction: column;
     }
-    
+
     th, td {
         padding: 6px;
         font-size: 14px;
