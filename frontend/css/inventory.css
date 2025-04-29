@@ -35,45 +35,43 @@ tr:hover {
 
 .action-buttons {
     display: flex;
-    flex-wrap: nowrap; /* Prevent buttons from wrapping to the next line */
-    gap: 5px; /* Slightly reduced gap for a tighter look */
+    flex-wrap: nowrap;
+    gap: 8px; /* Adjust spacing between buttons */
     justify-content: flex-start; /* Align buttons to the start */
 }
 
 .action-buttons button {
-    padding: 6px 10px; /* Slightly smaller padding */
+    padding: 8px 12px; /* Adjust padding for size */
     border: none;
-    border-radius: 4px; /* Slightly less rounded corners */
+    border-radius: 6px; /* More rounded corners */
     cursor: pointer;
-    font-size: 0.9em; /* Slightly smaller font size */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    font-size: 0.9em; /* Adjust font size */
+    transition: opacity 0.3s;
     flex-shrink: 0;
-    min-width: auto; /* Adjust width based on content */
-    text-align: center; /* Center the text */
+    min-width: 60px; /* Ensure a minimum width */
+    text-align: center;
 }
 
 .action-buttons button:hover {
-    opacity: 0.9; /* Slightly less fade on hover */
+    opacity: 0.8; /* Slightly stronger hover effect */
 }
 
 .edit-btn {
-    background-color: var(--secondary); /* Use secondary for edit */
-    color: var(--text-dark);
+    background-color: #28a745; /* Bootstrap success color */
+    color: white;
 }
 
 .edit-btn:hover {
-    background-color: var(--highlight); /* Highlight on hover */
-    color: var(--text-dark);
+    background-color: #218838; /* Darker shade for hover */
 }
 
 .delete-btn {
-    background-color: var(--accent); /* Use accent for delete */
-    color: var(--text-light);
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
 }
 
 .delete-btn:hover {
-    background-color: #c82333; /* Keep original hover color */
-    color: var(--text-light);
+    background-color: #c82333; /* Darker shade for hover */
 }
 
 /* Add New Garment Section */
