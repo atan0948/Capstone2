@@ -95,7 +95,3 @@ th {
         font-size: 14px;
     }
 }
-.nav li a:hover, .nav li a.active {
-    background-color: var(--secondary); /* Use secondary color for hover/active */
-    color: var(--text-dark); /* Dark text on hover/active */
-}
