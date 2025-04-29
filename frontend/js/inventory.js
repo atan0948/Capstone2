@@ -89,8 +89,8 @@ function displayGarments(garments) {
                 width="50" height="50" style="object-fit: cover; border-radius: 5px;">
             </td>
             <td>
-                <button onclick="editGarment(${garment.id}, '${garment.item_name}', '${garment.category}', '${garment.size}', '${garment.color}', ${garment.quantity}, ${price}, ${cost_price}, '${garment.supplier}', '${garment.location}', '${garment.image_url}')">Edit</button>
-                <button onclick="deleteGarment(${garment.id})">Delete</button>
+                <button onclick="editGarment(${garment.id}, '${garment.item_name}', '${garment.category}', '${garment.size}', '${garment.color}', ${garment.quantity}, ${price}, ${cost_price}, '${garment.supplier}', '${garment.location}', '${garment.image_url}')" class="editbtn">Edit</button>
+                <button onclick="deleteGarment(${garment.id})" class="deletebtn">Delete</button>
             </td>
         `;
         tableBody.appendChild(row);
