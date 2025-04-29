@@ -166,11 +166,13 @@ function getButtonStyle(type) {
         display: flex;
         align-items: center;
         gap: 5px;
+        height:25px;
+        width:75px;
     `;
 
     if (type === 'edit') {
         return baseStyles + `
-            background-color: #28a745;
+            background-color: #659287;
             color: white;
         `;
     } else if (type === 'delete') {
