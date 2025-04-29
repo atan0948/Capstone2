@@ -28,9 +28,10 @@
   .container {
       display: flex;
       width: 100%;
-      min-height: 100vh;
-      position: fixed;
       height: 100%;
+      min-height: 100vh;
+      position: absolute;
+    
   }
   
   .sidebar {
@@ -101,18 +102,24 @@
   .search-bar {
       display: flex;
       width: 100%;
-      max-width: 350px;
+      max-width: 20%;
       margin-left: auto;
+      position: sticky;
+      height: 15%;
+      padding-bottom: 20px;
+      
   }
   
   .search-bar input {
       flex: 1;
+      max-width: 350px;
       padding: 8px 12px;
       border: 1px solid #ccc; /* Keep a neutral border */
       border-radius: 4px 0 0 4px;
       border-right: none;
       color: var(--text-dark); /* Add text color */
-      background-color: #fff; /* Ensure input background is white */
+      background-color: #fff;
+     
   }
   
   .search-bar button {

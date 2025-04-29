@@ -1,27 +1,3 @@
-header .search-bar {
-    display: flex;
-    width: 100%;
-    max-width: 350px;
-}
-
-header .search-bar input {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-    color: var(--text-dark);
-    background-color: #fff;
-}
-
-header .search-bar button {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-left: none;
-    border-radius: 0 4px 4px 0;
-    background-color: var(--secondary); /* Use secondary for search button */
-    color: var(--text-dark);
-    cursor: pointer;
-}
 
 .overview {
     margin-bottom: 20px;
