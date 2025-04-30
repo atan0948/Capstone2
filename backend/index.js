@@ -19,10 +19,13 @@ const app = express();
 
 // ✅ Enable CORS (for development)
 app.use(cors({
-    origin: 'http://127.0.0.1:5500', 
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Cache-Control']
 }));
+
+app.use(express.static('public'));
+
 
 // ✅ Middleware
 app.use(express.json()); // Parse JSON request bodies
@@ -88,4 +91,5 @@ app.get('/api/defects/today', async (req, res) => {
 
 // ✅ Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running at http://0.0.0.0:${PORT}`));
+
