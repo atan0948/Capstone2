@@ -28,10 +28,9 @@
 
             </div>
             <ul class="nav">
-                <li><a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="inventory.html"><i class="fas fa-box"></i> Inventory</a></li>
-                <li><a href="record-management.html"><i class="fas fa-folder"></i> Record Management</a></li>
-                <li><a href="sales.html" class="active"><i class="fas fa-shopping-cart"></i> Sales</a></li>
+                <li><a href="yaerinzinventory.html"><i class="fas fa-box"></i> Inventory</a></li>
+                <li><a href="yaerinzrecordmanagement.html"><i class="fas fa-folder"></i> Record Management</a></li>
+                <li><a href="yaerinzsales.html" class="active"><i class="fas fa-shopping-cart"></i> Sales</a></li>
                 <li id="logout"><a href=></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logout</a></li>
             </ul>
         </aside>
@@ -56,9 +55,11 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Item</th>
+                                        <th>Price</th>
                                         <th>Qty</th>
                                         <th>Total</th>
                                         <th>Customer</th>
+                                        <th>Payment</th>
                                         <th>Date</th>
                                     </tr>
             
@@ -66,10 +67,10 @@
                                 <tbody id="salesTableBody"></tbody>
                             </table>
                         </div>
-                        
+                        <!--<button id="openQuickSale" class="open-btn">+ Quick Sale</button>-->
                     </div>
                     
- <!--                 <div class="sales-form-container">
+                    <div class="sales-form-container">
                         <h3>New Transaction</h3>
                         <form id="salesForm">
                             <label for="item">Select Item:</label>
@@ -97,7 +98,7 @@
                     </div>
                 </div>
 
-          
+                <!-- Quick Sale Modal -->
                 <div id="quickSaleModal" class="modal">
                     <div class="modal-content">
                         <span class="close-btn" id="closeQuickSale">&times;</span>
@@ -131,7 +132,7 @@
                 </div>
             </section>
         </main>
-    </div>-->
+    </div>
 
     <script src="js/menu-toggle.js"></script>
     <script src="./js/salesf.js"></script>
