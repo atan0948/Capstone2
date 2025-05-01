@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('http://192.168.229.207:3000/api/sales', {
+            const response = await fetch('http://192.168.78.207:3000/api/sales', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('http://192.168.229.207:3000/api/sales', {
+            const response = await fetch('http://192.168.78.207:3000/api/sales', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!itemId) return;
 
         try {
-            const response = await fetch(`http://192.168.229.207:3000/api/garments/${itemId}`, {
+            const response = await fetch(`http://192.168.78.207:3000/api/garments/${itemId}`, {
                 headers: { 'Authorization': localStorage.getItem('token') }
             });
             const item = await response.json();
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Fetch inventory items for regular sales dropdown
 async function fetchInventory() {
     try {
-        const response = await fetch('http://192.168.229.207:3000/api/garments', {
+        const response = await fetch('http://192.168.78.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -134,7 +134,7 @@ async function fetchInventory() {
 // Fetch and display sales records
 async function fetchSales() {
     try {
-        const response = await fetch('http://192.168.229.207:3000/api/sales', {
+        const response = await fetch('http://192.168.78.207:3000/api/sales', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -164,7 +164,7 @@ async function fetchSales() {
 // Load garments into Quick Sale modal
 async function loadItemsForQuickSale() {
     try {
-        const response = await fetch('http://192.168.229.207:3000/api/garments', {
+        const response = await fetch('http://192.168.78.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
         const garments = await response.json();

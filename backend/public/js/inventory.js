@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch('http://192.168.229.207:3000/api/garments', {
+            const response = await fetch('http://192.168.78.207:3000/api/garments', {
                 method: "POST",
                 headers: { "Authorization": localStorage.getItem("token") },
                 body: formData // ✅ Correctly sending FormData (not JSON)
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchGarments() {
     try {
         console.log("Fetching garments...");
-        const response = await fetch('http://192.168.229.207:3000/api/garments', {
+        const response = await fetch('http://192.168.78.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -89,6 +89,7 @@ function renderInventoryTable(garments, tableBody) {
         const cost_price = parseFloat(garment.cost_price) || 0;
 
         const row = document.createElement('tr');
+        row.setAttribute('data-id', garment.id);  // Add data-id attribute for row identification
         row.innerHTML = `
             <td>${garment.id || 'N/A'}</td>
             <td>${garment.item_name || 'N/A'}</td>
@@ -106,48 +107,50 @@ function renderInventoryTable(garments, tableBody) {
                 width="50" height="50" style="object-fit: cover; border-radius: 5px;">
             </td>
             <td>
-                <button class="edit-btn-${garment.id}" style="${getButtonStyle('edit')}">
+                <button class="edit-btn" data-id="${garment.id}" style="${getButtonStyle('edit')}">
                     <i class="fas fa-edit"></i> Edit
                 </button>
-                <button class="delete-btn-${garment.id}" style="${getButtonStyle('delete')}">
+                <button class="delete-btn" data-id="${garment.id}" style="${getButtonStyle('delete')}">
                     <i class="fas fa-trash-alt"></i> Delete
                 </button>
             </td>
         `;
         tableBody.appendChild(row);
-
-        // Add event listeners and inline styles.
-        const editButton = document.querySelector(`.edit-btn-${garment.id}`);
-        const deleteButton = document.querySelector(`.delete-btn-${garment.id}`);
-
-        if (editButton) {
-            editButton.addEventListener('click', () => {
-                editGarment(garment.id, garment.item_name, garment.category, garment.size, garment.color, garment.quantity, price, cost_price, garment.supplier, garment.location, garment.image_url);
-            });
-            // Apply hover effect using JavaScript
-            editButton.addEventListener('mouseover', () => {
-                editButton.style.backgroundColor = '#218838';
-            });
-            editButton.addEventListener('mouseout', () => {
-                editButton.style.backgroundColor = '#28a745';
-            });
-        }
-
-        if (deleteButton) {
-            deleteButton.addEventListener('click', () => {
-                deleteGarment(garment.id);
-            });
-            // Apply hover effect using JavaScript
-            deleteButton.addEventListener('mouseover', () => {
-                deleteButton.style.backgroundColor = '#c82333';
-            });
-            deleteButton.addEventListener('mouseout', () => {
-                deleteButton.style.backgroundColor = '#dc3545';
-            });
-        }
     });
+
+    // 🔥 Now that ALL rows are created, attach event listeners!
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const garmentId = button.getAttribute('data-id');
+            const garment = garments.find(g => g.id == garmentId);
+            if (garment) {
+                editGarment(
+                    garment.id,
+                    garment.item_name,
+                    garment.category,
+                    garment.size,
+                    garment.color,
+                    garment.quantity,
+                    garment.price,
+                    garment.cost_price,
+                    garment.supplier,
+                    garment.location,
+                    garment.status
+                );
+            }
+        });
+    });
+
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const garmentId = button.getAttribute('data-id');
+            deleteGarment(garmentId);
+        });
+    });
+
     console.log("✅ Table updated successfully.");
 }
+
 
 /**
  * Returns a string of CSS styles for the buttons.
@@ -190,7 +193,7 @@ window.deleteGarment = async function (id) {
     console.log(`🗑 Attempting to delete garment ID: ${id}`);
 
     try {
-        const response = await fetch(`http://192.168.229.207:3000/api/garments/${id}`, {
+        const response = await fetch(`http://192.168.78.207:3000/api/garments/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': localStorage.getItem('token') }
         });
@@ -239,42 +242,50 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
 
     const id = document.getElementById('editId').value;
 
-    const formData = new FormData();
-    formData.append('item_name', document.getElementById('editItemName').value);
-    formData.append('category', document.getElementById('editCategory').value);
-    formData.append('size', document.getElementById('editSize').value);
-    formData.append('color', document.getElementById('editColor').value);
-    formData.append('quantity', document.getElementById('editQuantity').value);
-    formData.append('price', document.getElementById('editPrice').value);
-    formData.append('cost_price', document.getElementById('editCostPrice').value);
-    formData.append('supplier', document.getElementById('editSupplier').value);
-    formData.append('location', document.getElementById('editLocation').value);
-    formData.append('status', document.getElementById('editStatus').value);
+    const data = {
+        item_name: document.getElementById('editItemName').value,
+        category: document.getElementById('editCategory').value,
+        size: document.getElementById('editSize').value,
+        color: document.getElementById('editColor').value,
+        quantity: document.getElementById('editQuantity').value,
+        price: document.getElementById('editPrice').value,
+        cost_price: document.getElementById('editCostPrice').value,
+        supplier: document.getElementById('editSupplier').value,
+        location: document.getElementById('editLocation').value,
+        status: document.getElementById('editStatus').value
+    };
 
-    const image = document.getElementById('editImage').files[0];
-    if (image) {
-        formData.append('image', image);
-    }
-
-    fetch(`http://192.168.229.207:3000/api/garments/${id}`, {
+    fetch(`http://192.168.78.207:3000/api/garments/${id}`, {
         method: 'PUT',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify(data)
     })
-        .then(response => response.json())
-        .then(data => {
-            alert('Garment updated successfully!');
-            location.reload();
-        })
-        .catch(err => {
-            alert('Error updating garment: ' + err.message);
-            console.error(err);
-        });
+    .then(response => response.json())
+    .then(data => {
+        console.log("Updated garment data:", data);
+        alert('Garment updated successfully!');
+        location.reload();
+         // Update only the color in the table dynamically
+         const row = document.querySelector(`tr[data-id="${id}"]`);
+         row.querySelector('td:nth-child(5)').textContent = data.color;  // Update color text
+         row.querySelector('td:nth-child(5)').style.backgroundColor = data.color; // Update color in the background
+ 
+         closeEditModal(); // Close the modal after updating the garment
+    })
+    .catch(err => {
+        alert('Error updating garment: ' + err.message);
+        console.error(err);
+    });
 });
+
 
 async function fetchAndRenderLowStockItems() {
     try {
         console.log("Fetching low stock garments...");
-        const response = await fetch('http://192.168.229.207:3000/api/garments/low-stock', {
+        const response = await fetch('http://192.168.78.207:3000/api/garments/low-stock', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -292,7 +303,7 @@ async function fetchAndRenderLowStockItems() {
 async function fetchAndRenderAllInventory() {
     try {
         console.log("Fetching all inventory garments...");
-        const response = await fetch('http://192.168.229.207:3000/api/garments', {
+        const response = await fetch('http://192.168.78.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
         if (!response.ok) {
