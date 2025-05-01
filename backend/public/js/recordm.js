@@ -8,7 +8,7 @@ document.getElementById('generateReportBtn').addEventListener('click', async () 
     }
 
     try {
-        const res = await fetch(`http://localhost:3000/api/records/report?start=${fromDate}&end=${toDate}`);
+        const res = await fetch(`http://192.168.229.207:3000/api/records/report?start=${fromDate}&end=${toDate}`);
         if (!res.ok) {
             throw new Error('Failed to fetch report');
         }
@@ -82,7 +82,7 @@ document.getElementById("downloadInventoryBtn").addEventListener("click", () => 
         return;
     }
 
-    const url = `http://localhost:3000/api/records/export-inventory-range?start=${start}&end=${end}`;
+    const url = `http://192.168.229.207:3000/api/records/export-inventory-range?start=${start}&end=${end}`;
     window.open(url, "_blank");
 });
 
@@ -95,7 +95,7 @@ document.getElementById("downloadSalesBtn").addEventListener("click", () => {
         return;
     }
 
-    const url = `http://localhost:3000/api/records/export-sales-range?start=${start}&end=${end}`;
+    const url = `http://192.168.229.207:3000/api/records/export-sales-range?start=${start}&end=${end}`;
     window.open(url, "_blank");
 });
 

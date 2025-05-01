@@ -2,7 +2,7 @@ const formData = new FormData(addGarmentForm);
 formData.forEach((value, key) => console.log(`📩 Sending: ${key} = ${value}`)); // Debug data
 
 try {
-    const response = await fetch("http://localhost:3000/api/garments", {
+    const response = await fetch("http://192.168.229.207:3000/api/garments", {
         method: "POST",
         // ❌ Do NOT set "Content-Type", it will be set automatically for `FormData`
         body: formData, 

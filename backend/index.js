@@ -26,6 +26,10 @@ app.use(cors({
 
 app.use(express.static('public'));
 
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // ✅ Middleware
 app.use(express.json()); // Parse JSON request bodies

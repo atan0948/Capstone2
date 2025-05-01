@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch('http://localhost:3000/api/garments', {
+            const response = await fetch('http://192.168.229.207:3000/api/garments', {
                 method: "POST",
                 headers: { "Authorization": localStorage.getItem("token") },
                 body: formData // ✅ Correctly sending FormData (not JSON)
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchGarments() {
     try {
         console.log("Fetching garments...");
-        const response = await fetch('http://localhost:3000/api/garments', {
+        const response = await fetch('http://192.168.229.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -190,7 +190,7 @@ window.deleteGarment = async function (id) {
     console.log(`🗑 Attempting to delete garment ID: ${id}`);
 
     try {
-        const response = await fetch(`http://localhost:3000/api/garments/${id}`, {
+        const response = await fetch(`http://192.168.229.207:3000/api/garments/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': localStorage.getItem('token') }
         });
@@ -256,7 +256,7 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
         formData.append('image', image);
     }
 
-    fetch(`http://localhost:3000/api/garments/${id}`, {
+    fetch(`http://192.168.229.207:3000/api/garments/${id}`, {
         method: 'PUT',
         body: formData
     })
@@ -274,7 +274,7 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
 async function fetchAndRenderLowStockItems() {
     try {
         console.log("Fetching low stock garments...");
-        const response = await fetch('http://localhost:3000/api/garments/low-stock', {
+        const response = await fetch('http://192.168.229.207:3000/api/garments/low-stock', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -292,7 +292,7 @@ async function fetchAndRenderLowStockItems() {
 async function fetchAndRenderAllInventory() {
     try {
         console.log("Fetching all inventory garments...");
-        const response = await fetch('http://localhost:3000/api/garments', {
+        const response = await fetch('http://192.168.229.207:3000/api/garments', {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
         if (!response.ok) {
