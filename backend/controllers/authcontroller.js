@@ -1,9 +1,15 @@
+const db = require('../database/db'); // Adjust the path if needed
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../database/db'); // ✅ Import updated db.js
+
 
 const login = async (req, res) => {
     const { username, password } = req.body;
+    console.log('Login payload:', req.body); // 👈 Log the input
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and password are required' });
+    }
 
     try {
         const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
@@ -13,20 +19,17 @@ const login = async (req, res) => {
         }
 
         const user = rows[0];
-
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        // ✅ Include role in JWT token
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        // ✅ Also send the role in the response
         res.status(200).json({
             message: 'Login successful',
             token,
@@ -35,8 +38,8 @@ const login = async (req, res) => {
 
     } catch (error) {
         console.error('Error during login:', error);
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: error.message || 'Server error' });
     }
 };
 
-module.exports = { login };
+module.exports = { login }; // ✅ this is correct

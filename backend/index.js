@@ -5,7 +5,6 @@ const authRoutes = require('./routes/authroutes');
 const garmentsRoutes = require('./routes/garmentroutes');
 const salesRoutes = require('./routes/sales');
 const garmentFileUpload = require('./routes/garment_fileupload');
-const verifyToken = require('./authmiddleware');
 const db = require('./database/db');
 const records = require('./routes/records');
 const lowStockCount = require('./routes/dash');
@@ -55,17 +54,11 @@ app.use('/api/inventory', inventoryRoutes);
 app.use('/api/inventory', inventoryChartRoutes);
 app.use('/api/inventory', inventoryExcelRoutes);
 
-
-// ✅ Route for exporting inventory report to Excel (corrected)
-app.use('/api/inventory', inventoryExcelRoutes); // Ensure this is correctly used as a router
-
 // ✅ Static file serving for uploads
 app.use('/uploads', express.static('uploads'));
 
 // ✅ Protected route (using middleware)
-app.get('/api/protected', verifyToken, (req, res) => {
-    res.json({ message: "Welcome to the protected route!", user: req.user });
-});
+const { verifyToken, requireAdmin, requireUser } = require('./authmiddleware');
 
 // ✅ Ensure Database Connection
 db.getConnection((err, connection) => {
