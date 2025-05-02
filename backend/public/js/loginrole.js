@@ -1,10 +1,10 @@
 document.getElementById('loginForm').addEventListener('submit', function (e) {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
 
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
 
-    // Optional: add basic validation
+
     if (!username || !password) {
         document.getElementById('error').textContent = 'Please enter both username and password.';
         return;
