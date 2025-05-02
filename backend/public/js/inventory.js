@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ Page Loaded - Fetching Garments...");
     fetchGarments(); // Ensure table updates on page load
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            const response = await fetch('http://192.168.78.207:3000/api/garments', {
+            const response = await fetch(`${BASE_URL}/api/garments`, {
                 method: "POST",
                 headers: { "Authorization": localStorage.getItem("token") },
                 body: formData // ✅ Correctly sending FormData (not JSON)
@@ -56,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchGarments() {
     try {
         console.log("Fetching garments...");
-        const response = await fetch('http://192.168.78.207:3000/api/garments', {
+        const response = await fetch(`${BASE_URL}/api/garments`, {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -193,7 +195,7 @@ window.deleteGarment = async function (id) {
     console.log(`🗑 Attempting to delete garment ID: ${id}`);
 
     try {
-        const response = await fetch(`http://192.168.78.207:3000/api/garments/${id}`, {
+        const response = await fetch(`${BASE_URL}/api/garments/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': localStorage.getItem('token') }
         });
@@ -255,7 +257,7 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
         status: document.getElementById('editStatus').value
     };
 
-    fetch(`http://192.168.78.207:3000/api/garments/${id}`, {
+    fetch(`${BASE_URL}/api/garments/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -285,7 +287,7 @@ document.getElementById('editGarmentForm').addEventListener('submit', function (
 async function fetchAndRenderLowStockItems() {
     try {
         console.log("Fetching low stock garments...");
-        const response = await fetch('http://192.168.78.207:3000/api/garments/low-stock', {
+        const response = await fetch(`${BASE_URL}/api/garments/low-stock`, {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
 
@@ -303,7 +305,7 @@ async function fetchAndRenderLowStockItems() {
 async function fetchAndRenderAllInventory() {
     try {
         console.log("Fetching all inventory garments...");
-        const response = await fetch('http://192.168.78.207:3000/api/garments', {
+        const response = await fetch(`${BASE_URL}/api/garments`, {
             headers: { 'Authorization': localStorage.getItem('token') }
         });
         if (!response.ok) {

@@ -1,21 +1,40 @@
 const jwt = require('jsonwebtoken');
-const secretKey = 'b14f3a8c9d6e7f0g1h2i3j4k5l6m7n8o'; // Use the same secret key from login
+const secretKey = process.env.JWT_SECRET; // Ideally use process.env.JWT_SECRET
 
 function verifyToken(req, res, next) {
-    const token = req.headers.authorization; // Get token from headers
+    const token = req.headers.authorization;
 
     if (!token) {
         return res.status(401).json({ error: "Access denied. No token provided." });
     }
 
-    jwt.verify(token, secretKey, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ error: "Invalid token." });
-        }
-
-        req.user = decoded; // Store user data from token
-        next(); // Continue to the protected route
-    });
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        req.user = decoded; // Attach user info (id, username, role) to request
+        next();
+    } catch (err) {
+        return res.status(400).json({ error: "Invalid token." });
+    }
 }
 
-module.exports = verifyToken;
+// ✅ Optional: Middleware to restrict to admins only
+function requireAdmin(req, res, next) {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: "Access denied. Admins only." });
+    }
+    next();
+}
+
+// ✅ Optional: Middleware to restrict to users only
+function requireUser(req, res, next) {
+    if (req.user.role !== 'user') {
+        return res.status(403).json({ error: "Access denied. Users only." });
+    }
+    next();
+}
+
+module.exports = {
+    verifyToken,
+    requireAdmin,
+    requireUser
+};
