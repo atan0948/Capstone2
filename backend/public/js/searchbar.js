@@ -1,9 +1,10 @@
-// Search inventory
+
+
 async function searchInventory() {
     const query = document.getElementById('inventorySearch').value;
 
     try {
-        const response = await fetch(`/api/inventory/search?query=${query}`);
+    const response = await fetch(`${BASE_URL}/api/inventory/search?query=${query}`);
         const data = await response.json();
         displayResults(data, 'inventory');
     } catch (err) {
@@ -16,7 +17,7 @@ async function searchSales() {
     const query = document.getElementById('salesSearch').value;
 
     try {
-        const response = await fetch(`/api/sales/search?query=${query}`);
+        const response = await fetch(`${BASE_URL}/api/sales/search?query=${query}`);
         const data = await response.json();
         displayResults(data, 'sales');
     } catch (err) {

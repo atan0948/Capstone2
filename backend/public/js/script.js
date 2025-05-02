@@ -1,4 +1,5 @@
 
+
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('loginForm');
     const errorElement = document.getElementById('error');
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             // Send a POST request to the backend login API
-            const response = await fetch('http://192.168.78.207:3000/api/login', {
+            const response = await fetch(`${BASE_URL}/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),

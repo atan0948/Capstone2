@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const token = localStorage.getItem('token');
 
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function fetchInventoryChanges() {
     try {
-        const response = await fetch("http://192.168.78.207:3000/api/inventory/inventory-changes");
+        const response = await fetch(`${BASE_URL}/api/inventory/inventory-changes`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -73,7 +75,7 @@ function renderInventoryChart(labels, quantities) {
 
 
 function fetchTodayDefects() {
-    fetch('http://192.168.78.207:3000/api/defects/today', {
+    fetch(`${BASE_URL}/api/defects/today`, {
         headers: {
             "Cache-Control": "no-cache"
         }
@@ -89,7 +91,7 @@ function fetchTodayDefects() {
 
 async function fetchLowStockCount() {
     try {
-        const response = await fetch('http://192.168.78.207:3000/api/dashboard/low-stock');
+        const response = await fetch(`${BASE_URL}/api/dashboard/low-stock`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -129,7 +131,7 @@ async function fetchLowStockCount() {
 
 async function fetchTotalSalesOrders() {
     try {
-        const response = await fetch('http://192.168.78.207:3000/api/sales/total-orders');
+        const response = await fetch(`${BASE_URL}/api/sales/total-orders`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -150,7 +152,7 @@ fetchTotalSalesOrders();
 
 async function fetchInventoryOverview() {
     try {
-        const response = await fetch('http://192.168.78.207:3000/api/inventory/current');
+        const response = await fetch(`${BASE_URL}/api/inventory/current`);
         const data = await response.json();
 
         if (data) {
