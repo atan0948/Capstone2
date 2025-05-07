@@ -1,11 +1,11 @@
-const db = require('../database/db'); // Adjust the path if needed
+const db = require('../database/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
 const login = async (req, res) => {
     const { username, password } = req.body;
-    console.log('Login payload:', req.body); // 👈 Log the input
+    console.log('Login payload:', req.body);
 
     if (!username || !password) {
         return res.status(400).json({ error: 'Username and password are required' });
@@ -42,4 +42,4 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { login }; // ✅ this is correct
+module.exports = { login };

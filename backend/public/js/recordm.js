@@ -84,6 +84,7 @@ document.getElementById("downloadInventoryBtn").addEventListener("click", () => 
         return;
     }
 
+    // Update to point to PDF export route
     const url = `${BASE_URL}/api/records/export-inventory-range?start=${start}&end=${end}`;
     window.open(url, "_blank");
 });
@@ -97,7 +98,9 @@ document.getElementById("downloadSalesBtn").addEventListener("click", () => {
         return;
     }
 
+    // Update to point to PDF export route
     const url = `${BASE_URL}/api/records/export-sales-range?start=${start}&end=${end}`;
     window.open(url, "_blank");
 });
+
 

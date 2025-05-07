@@ -1,6 +1,24 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
+
+dotenv.config();
+const app = express(); // ✅ Declare app before using
+
+// ✅ Enable CORS
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Cache-Control']
+}));
+
+// ✅ Middleware
+app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ Route imports (AFTER app is defined)
 const authRoutes = require('./routes/authroutes');
 const garmentsRoutes = require('./routes/garmentroutes');
 const salesRoutes = require('./routes/sales');
@@ -10,57 +28,35 @@ const records = require('./routes/records');
 const lowStockCount = require('./routes/dash');
 const inventoryRoutes = require('./routes/inventory');
 const inventoryChartRoutes = require('./routes/inventory_chart');
-const inventoryExcelRoutes = require('./routes/excelformat');
 
-
-dotenv.config();
-const app = express();
-
-// ✅ Enable CORS (for development)
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Cache-Control']
-}));
-
-app.use(express.static('public'));
-
-const path = require('path');
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-// ✅ Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Needed for form-data
-
-// ✅ Authentication routes
+// ✅ Routes
 app.use('/api', authRoutes);
-
-// ✅ Garment CRUD routes
 app.use('/api/garments', garmentsRoutes);
-
-// ✅ Garment file upload routes
-app.use('/api/garments/upload', garmentFileUpload); // ✅ Moved to `/api/garments/upload`
-
-// ✅ Sales routes
-app.use('/api/sales', require('./routes/sales'));      // ✅ Handles /total-orders
-app.use('/api/dashboard', require('./routes/dash'));   // ✅ Handles /low-stock
-
+app.use('/api/garments/upload', garmentFileUpload);
+app.use('/api/sales', salesRoutes);
+app.use('/api/dashboard', lowStockCount);
 app.use('/api/records', records);
-
-// ✅ Existing Inventory Routes
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/inventory', inventoryChartRoutes);
-app.use('/api/inventory', inventoryExcelRoutes);
-
-// ✅ Static file serving for uploads
 app.use('/uploads', express.static('uploads'));
 
-// ✅ Protected route (using middleware)
+// ✅ Auth middleware
 const { verifyToken, requireAdmin, requireUser } = require('./authmiddleware');
 
-// ✅ Ensure Database Connection
+// ✅ Defects route
+app.get('/api/defects/today', async (req, res) => {
+    try {
+        const [rows] = await db.execute(
+            `SELECT COUNT(*) AS defectCount FROM garments WHERE status = 'Defective' AND DATE(date_added) = CURDATE()`
+        );
+        res.json({ defectCount: rows[0].defectCount });
+    } catch (err) {
+        console.error('Error fetching today\'s defect count:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// ✅ Ensure database connection
 db.getConnection((err, connection) => {
     if (err) {
         console.error("Database connection failed:", err);
@@ -70,23 +66,6 @@ db.getConnection((err, connection) => {
     connection.release();
 });
 
-// Route: GET /api/defects/today
-app.get('/api/defects/today', async (req, res) => {
-    const query = `SELECT COUNT(*) AS defectCount 
-                   FROM garments 
-                   WHERE status = 'Defective' 
-                   AND DATE(date_added) = CURDATE()`;
-
-    try {
-        const [rows] = await db.execute(query);
-        res.json({ defectCount: rows[0].defectCount });
-    } catch (err) {
-        console.error('Error fetching today\'s defect count:', err);
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
-// ✅ Start the server
+// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running at http://0.0.0.0:${PORT}`));
-

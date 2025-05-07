@@ -1,13 +1,13 @@
-const ExcelJS = require("exceljs");
+const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const path = require("path");
-const db = require("../database/db"); // Ensure correct database connection
+const db = require("../database/db");
 
 const fetchInventoryData = async (start, end) => {
     return new Promise((resolve, reject) => {
         const query = `
             SELECT id, item_name, category, size, color, quantity, price, supplier, location, date_added 
-            FROM inventory
+            FROM garments
             WHERE date_added BETWEEN ? AND ?
         `;
         db.query(query, [start, end], (err, results) => {
@@ -30,67 +30,65 @@ const exportInventoryReport = async (req, res) => {
             return res.status(404).json({ message: "No inventory records found." });
         }
 
-        // ✅ Create a new Excel workbook and worksheet
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet("Inventory Report");
+        
+        const doc = new PDFDocument({ margin: 50 });
+        
+        const filePath = path.join(__dirname, `inventory_report_${start}_to_${end}.pdf`);
+        
+        doc.pipe(fs.createWriteStream(filePath));
 
-        // ✅ Define columns with headers
-        worksheet.columns = [
-            { header: "ID", key: "id", width: 5 },
-            { header: "Item Name", key: "item_name", width: 20 },
-            { header: "Category", key: "category", width: 15 },
-            { header: "Size", key: "size", width: 10 },
-            { header: "Color", key: "color", width: 10 },
-            { header: "Quantity", key: "quantity", width: 10 },
-            { header: "Price", key: "price", width: 15 },
-            { header: "Supplier", key: "supplier", width: 20 },
-            { header: "Location", key: "location", width: 20 },
-            { header: "Date Added", key: "date_added", width: 15 }
+        doc.fontSize(20).text("Inventory Report", { align: "center" });
+        doc.moveDown(2);
+        
+        doc.fontSize(12).text(`From: ${start} To: ${end}`, { align: "center" });
+        doc.moveDown(2);
+
+        
+        const headers = [
+            "ID", "Item Name", "Category", "Size", "Color", "Quantity", "Price", "Supplier", "Location", "Date Added"
         ];
 
-        // ✅ Add data rows
-        inventoryData.forEach(item => {
-            worksheet.addRow(item);
+        doc.fontSize(10);
+        
+        // Draw headers
+        headers.forEach((header, index) => {
+            doc.text(header, 50 + (index * 80), doc.y);
         });
 
-        // ✅ Apply styles to the header row
-        worksheet.getRow(1).eachCell((cell) => {
-            cell.font = { bold: true };
-            cell.fill = {
-                type: "pattern",
-                pattern: "solid",
-                fgColor: { argb: "FFFFCC00" } // Yellow header
-            };
-            cell.alignment = { horizontal: "center" };
+        // Add a separator line
+        doc.moveDown();
+        doc.lineWidth(0.5).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
+
+        // Loop through the data and add rows
+        inventoryData.forEach((item, index) => {
+            doc.text(item.id, 50, doc.y);
+            doc.text(item.item_name, 130, doc.y);
+            doc.text(item.category, 210, doc.y);
+            doc.text(item.size, 290, doc.y);
+            doc.text(item.color, 370, doc.y);
+            doc.text(item.quantity, 450, doc.y);
+            doc.text(item.price, 530, doc.y);
+            doc.text(item.supplier, 610, doc.y);
+            doc.text(item.location, 690, doc.y);
+            doc.text(item.date_added, 770, doc.y);
+            
+            // Move to the next row
+            doc.moveDown();
         });
 
-        // ✅ Apply border styles to all cells
-        worksheet.eachRow((row) => {
-            row.eachCell((cell) => {
-                cell.border = {
-                    top: { style: "thin" },
-                    left: { style: "thin" },
-                    bottom: { style: "thin" },
-                    right: { style: "thin" }
-                };
-            });
-        });
+        // Finalize the document
+        doc.end();
 
-        console.log("✅ Workbook created with styled sheet:");
-console.log(workbook);
- 
-
-        // ✅ Write file to memory and send as response
-        const filePath = path.join(__dirname, `inventory_report_${start}_to_${end}.xlsx`);
-        await workbook.xlsx.writeFile(filePath);
-
-        res.download(filePath, (err) => {
-            if (err) {
-                console.error("❌ File download error:", err);
-            }
-            // Delete file after sending
-            fs.unlink(filePath, (err) => {
-                if (err) console.error("❌ Error deleting file:", err);
+        // Wait until the file is written before sending it
+        doc.on('end', () => {
+            res.download(filePath, (err) => {
+                if (err) {
+                    console.error("❌ File download error:", err);
+                }
+                
+                fs.unlink(filePath, (err) => {
+                    if (err) console.error("❌ Error deleting file:", err);
+                });
             });
         });
 
