@@ -105,8 +105,11 @@ function renderInventoryTable(garments, tableBody) {
             <td>${garment.location || 'N/A'}</td>
             <td>${garment.status || 'Available'}</td>
             <td>
-                <img src="${garment.image_url ? `/uploads/${garment.image_url}` : 'https://via.placeholder.com/50'}"
-                width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+<img 
+    src="${garment.image_url ? `${BASE_URL}/uploads/${garment.image_url}` : 'https://via.placeholder.com/50'}"
+    onerror="this.onerror=null; this.src='https://via.placeholder.com/50';"
+    width="50" height="50" style="object-fit: cover; border-radius: 5px;">
+
             </td>
             <td>
                 <button class="edit-btn" data-id="${garment.id}" style="${getButtonStyle('edit')}">
