@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaerinz Garments - Inventory</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/system.css">
+    <link rel="stylesheet" href="css/inventory.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+    <div class="mobile-header">
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="search-bar">
+            <input type="text" placeholder="Search Here">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="Images/Logo.png" alt="Yaerinz Garments Logo">
+                <p>Automation System</p>
+            </div>
+            <ul class="nav">
+                <li><a href="yaerinzinventory.html" class="active"><i class="fas fa-box"></i> Inventory</a></li>
+                <li><a href="yaerinzrecordmanagement.html"><i class="fas fa-folder"></i> Record Management</a></li>
+                <li><a href="yaerinzsales.html"><i class="fas fa-shopping-cart"></i> Sales</a></li>
+                <li id="logout"><a href=></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logout</a></li>
+            </ul>
+        </aside>
+        <main class="content">
+            <header>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search Here">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </header>
+            <section class="page-content">
+                <div class="inventory-table">
+                    <div class="inventory-header">
+                        <h2>Inventory</h2>
+
+                    </div>
+                    <div class="inventory-table-scroll-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Cost Price</th>
+                                    <th>Supplier</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Image</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody">
+                                <tr>
+                                    <td colspan="13" style="text-align: center;">Loading inventory data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/menu-toggle.js"></script>
+    <script src="js/salesinv.js"></script>
+    <script src="js/searchbar.js"></script>
+    <script src="js/image.js"></script>
+    <script src="js/protectroute.js"></script>
+    </body>
+</html>
