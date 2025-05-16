@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 dotenv.config();
-const app = express(); // ✅ Declare app before using
+const app = express();
 
 // ✅ Enable CORS
 app.use(cors({
@@ -66,6 +66,5 @@ db.getConnection((err, connection) => {
     connection.release();
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running at http://0.0.0.0:${PORT}`));

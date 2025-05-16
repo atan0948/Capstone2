@@ -1,4 +1,4 @@
-// routes/inventory.js
+
 const express = require('express');
 const router = express.Router();
 const db = require('../database/db');
@@ -26,7 +26,6 @@ router.get('/current', async (req, res) => {
     }
 });
 
-// routes/inventory.js
 
 router.get('/inventory-changes', async (req, res) => {
     try {
@@ -43,9 +42,9 @@ router.get('/inventory-changes', async (req, res) => {
     }
 });
 
-// routes/inventory.js
+
 router.get('/search', async (req, res) => {
-    const { query } = req.query; // Getting the query parameter from the URL
+    const { query } = req.query;
 
     try {
         const [results] = await db.execute(`

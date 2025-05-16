@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { exportInventoryReport } = require('../controllers/dlbuttonrm');
+const { exportInventoryReport, exportSalesReport } = require('../controllers/dlbuttonrm');
 
 const db = require('../database/db');
 
 router.get('/export-inventory-range', exportInventoryReport);
+router.get('/export-sales-range', exportSalesReport);
+
 router.get('/report', async (req, res) => {
     const { start, end } = req.query;
 
@@ -17,7 +19,6 @@ router.get('/report', async (req, res) => {
 
         const [inventory] = await db.execute(query, [start, end]);
 
-        // Similarly for sales data or other reports
         const [sales] = await db.execute('SELECT * FROM sales WHERE sale_date BETWEEN ? AND ?', [start, end]);
 
         res.json({ inventory, sales });
@@ -26,4 +27,5 @@ router.get('/report', async (req, res) => {
         res.status(500).json({ error: 'Error fetching report data' });
     }
 });
+
 module.exports = router;

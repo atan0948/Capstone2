@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const secretKey = process.env.JWT_SECRET; // Ideally use process.env.JWT_SECRET
+const secretKey = process.env.JWT_SECRET;
 
 function verifyToken(req, res, next) {
     const token = req.headers.authorization;
@@ -10,7 +10,7 @@ function verifyToken(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, secretKey);
-        req.user = decoded; // Attach user info (id, username, role) to request
+        req.user = decoded;
         next();
     } catch (err) {
         return res.status(400).json({ error: "Invalid token." });

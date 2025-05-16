@@ -1,9 +1,8 @@
 const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
-// ✅ Create a promise-based database connection
 const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -11,4 +10,4 @@ const db = mysql.createPool({
     database: process.env.DB_NAME
 });
 
-module.exports = db; // ✅ No need for .promise() in controllers
+module.exports = db;

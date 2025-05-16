@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const db = require('../database/db'); // Ensure correct path
+const db = require('../database/db');
 
 // ✅ Configure Image Upload with Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "uploads/"); // Save images in 'uploads/' directory
+        cb(null, "uploads/");
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + "-" + file.originalname);
@@ -26,14 +26,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-// ✅ Add a new garment (WITH IMAGE UPLOAD)
+// ✅ Add a new garment
 router.post("/", upload.single("image"), async (req, res) => {
     try {
         console.log("📩 Incoming Request Body:", req.body);
         console.log("📸 Uploaded File:", req.file);
 
         const { item_name, category, size, color, quantity, price, cost_price, supplier, location, status } = req.body;
-        const imageUrl = req.file ? req.file.filename : null; // Get uploaded image filename
+        const imageUrl = req.file ? req.file.filename : null;
 
         if (!item_name || !category || !size || !color || !quantity || !price || !supplier) {
             return res.status(400).json({ error: "All fields are required" });

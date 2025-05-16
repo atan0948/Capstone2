@@ -1,101 +1,143 @@
-const PDFDocument = require("pdfkit");
-const fs = require("fs");
-const path = require("path");
-const db = require("../database/db");
-
-const fetchInventoryData = async (start, end) => {
-    return new Promise((resolve, reject) => {
-        const query = `
-            SELECT id, item_name, category, size, color, quantity, price, supplier, location, date_added 
-            FROM garments
-            WHERE date_added BETWEEN ? AND ?
-        `;
-        db.query(query, [start, end], (err, results) => {
-            if (err) {
-                console.error("❌ Error fetching inventory data:", err);
-                reject(err);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-};
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
+const db = require('../database/db');
 
 const exportInventoryReport = async (req, res) => {
     const { start, end } = req.query;
+    const filename = `Inventory_Report_${Date.now()}.pdf`;
+    const filePath = path.join(__dirname, `../public/${filename}`);
 
     try {
-        const inventoryData = await fetchInventoryData(start, end);
-        if (!inventoryData || inventoryData.length === 0) {
-            return res.status(404).json({ message: "No inventory records found." });
-        }
+        const [inventoryRows] = await db.query(
+            `SELECT id, item_name, category, size, color, quantity, price, supplier, location, date_added
+            FROM garments
+            WHERE date_added BETWEEN ? AND ?`,
+            [start, end]
+        );
 
-        
-        const doc = new PDFDocument({ margin: 50 });
-        
-        const filePath = path.join(__dirname, `inventory_report_${start}_to_${end}.pdf`);
-        
-        doc.pipe(fs.createWriteStream(filePath));
+        const doc = new PDFDocument({ margin: 30 });
+        const stream = fs.createWriteStream(filePath);
+        doc.pipe(stream);
 
-        doc.fontSize(20).text("Inventory Report", { align: "center" });
+        // Title
+        doc.fontSize(18).font('Helvetica-Bold').text('Inventory Report', { align: 'center' });
+        doc.moveDown(1);
+
+        // Date range
+        doc.fontSize(10).font('Helvetica').text(`From: ${start} To: ${end}`, { align: 'center' });
         doc.moveDown(2);
-        
-        doc.fontSize(12).text(`From: ${start} To: ${end}`, { align: "center" });
-        doc.moveDown(2);
 
-        
-        const headers = [
-            "ID", "Item Name", "Category", "Size", "Color", "Quantity", "Price", "Supplier", "Location", "Date Added"
-        ];
+        // Table Header
+        doc.fontSize(10).font('Helvetica-Bold');
+        doc.text('ID', 50, doc.y);
+        doc.text('Name', 100, doc.y);
+        doc.text('Category', 200, doc.y);
+        doc.text('Size', 300, doc.y);
+        doc.text('Color', 350, doc.y);
+        doc.text('Qty', 400, doc.y);
+        doc.text('Price', 450, doc.y);
+        doc.text('Supplier', 500, doc.y);
+        doc.text('Location', 550, doc.y);
+        doc.text('Date Added', 600, doc.y);
+        doc.moveDown(1);
 
-        doc.fontSize(10);
-        
-        // Draw headers
-        headers.forEach((header, index) => {
-            doc.text(header, 50 + (index * 80), doc.y);
-        });
+        // Table Content
+        doc.fontSize(9).font('Helvetica');
 
-        // Add a separator line
-        doc.moveDown();
-        doc.lineWidth(0.5).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-
-        // Loop through the data and add rows
-        inventoryData.forEach((item, index) => {
+        inventoryRows.forEach((item, index) => {
             doc.text(item.id, 50, doc.y);
-            doc.text(item.item_name, 130, doc.y);
-            doc.text(item.category, 210, doc.y);
-            doc.text(item.size, 290, doc.y);
-            doc.text(item.color, 370, doc.y);
-            doc.text(item.quantity, 450, doc.y);
-            doc.text(item.price, 530, doc.y);
-            doc.text(item.supplier, 610, doc.y);
-            doc.text(item.location, 690, doc.y);
-            doc.text(item.date_added, 770, doc.y);
-            
-            // Move to the next row
-            doc.moveDown();
+            doc.text(item.item_name, 100, doc.y);
+            doc.text(item.category, 200, doc.y);
+            doc.text(item.size, 300, doc.y);
+            doc.text(item.color, 350, doc.y);
+            doc.text(item.quantity, 400, doc.y);
+            doc.text(`₱${parseFloat(item.price).toFixed(2)}`, 450, doc.y);
+            doc.text(item.supplier, 500, doc.y);
+            doc.text(item.location, 550, doc.y);
+            doc.text(new Date(item.date_added).toLocaleDateString(), 600, doc.y);
+            doc.moveDown(0.5);
         });
 
-        // Finalize the document
         doc.end();
 
-        // Wait until the file is written before sending it
-        doc.on('end', () => {
-            res.download(filePath, (err) => {
-                if (err) {
-                    console.error("❌ File download error:", err);
-                }
-                
-                fs.unlink(filePath, (err) => {
-                    if (err) console.error("❌ Error deleting file:", err);
-                });
+        stream.on('finish', () => {
+            res.download(filePath, filename, err => {
+                if (err) console.error("❌ Download error:", err);
+                fs.unlink(filePath, () => {});
             });
         });
-
-    } catch (error) {
-        console.error("❌ Error exporting inventory report:", error);
-        res.status(500).json({ error: "Failed to export inventory report." });
+    } catch (err) {
+        console.error("❌ Error generating PDF:", err);
+        res.status(500).json({ error: 'Failed to generate PDF' });
     }
 };
 
-module.exports = { exportInventoryReport };
+const exportSalesReport = async (req, res) => {
+    const { start, end } = req.query;
+    const filename = `Sales_Report_${Date.now()}.pdf`;
+    const filePath = path.join(__dirname, `../public/${filename}`);
+
+    try {
+        const [salesRows] = await db.query(
+            `SELECT id, product_name, quantity_sold, total, customer_name, payment_type, sale_date
+            FROM sales
+            WHERE sale_date BETWEEN ? AND ?`,
+            [start, end]
+        );
+
+        const doc = new PDFDocument({ margin: 30 });
+        const stream = fs.createWriteStream(filePath);
+        doc.pipe(stream);
+
+        // Title
+        doc.fontSize(18).font('Helvetica-Bold').text('Sales Report', { align: 'center' });
+        doc.moveDown(1);
+
+        // Date range
+        doc.fontSize(10).font('Helvetica').text(`From: ${start} To: ${end}`, { align: 'center' });
+        doc.moveDown(2);
+
+        // Table Header
+        doc.fontSize(10).font('Helvetica-Bold');
+        doc.text('ID', 50, doc.y);
+        doc.text('Item', 100, doc.y);
+        doc.text('Qty Sold', 200, doc.y);
+        doc.text('Total', 300, doc.y);
+        doc.text('Customer', 400, doc.y);
+        doc.text('Payment Type', 500, doc.y);
+        doc.text('Sale Date', 600, doc.y);
+        doc.moveDown(1);
+
+        // Table Content
+        doc.fontSize(9).font('Helvetica');
+
+        salesRows.forEach((sale, index) => {
+            doc.text(sale.id, 50, doc.y);
+            doc.text(sale.product_name, 100, doc.y);
+            doc.text(sale.quantity_sold, 200, doc.y);
+            doc.text(`₱${parseFloat(sale.total).toFixed(2)}`, 300, doc.y);
+            doc.text(sale.customer_name || '-', 400, doc.y);
+            doc.text(sale.payment_type || '-', 500, doc.y);
+            doc.text(new Date(sale.sale_date).toLocaleString(), 600, doc.y);
+            doc.moveDown(0.5);
+        });
+
+        doc.end();
+
+        stream.on('finish', () => {
+            res.download(filePath, filename, err => {
+                if (err) console.error("❌ Download error:", err);
+                fs.unlink(filePath, () => {});
+            });
+        });
+    } catch (err) {
+        console.error("❌ Error generating PDF:", err);
+        res.status(500).json({ error: 'Failed to generate PDF' });
+    }
+};
+
+module.exports = {
+    exportInventoryReport,
+    exportSalesReport,
+};

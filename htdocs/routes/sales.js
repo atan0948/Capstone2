@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../database/db'); // Your DB connection
-
-// ✅ Add a sale and deduct inventory   
+const db = require('../database/db');
+   
 router.post('/', async (req, res) => {
     const { item_id, quantity_sold, payment_type, customer_name } = req.body;
 
@@ -11,7 +10,6 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        // 1. Fetch item to get stock and price
         const [items] = await db.execute('SELECT quantity, price FROM garments WHERE id = ?', [item_id]);
 
         if (items.length === 0) {
@@ -26,10 +24,8 @@ router.post('/', async (req, res) => {
 
         const total = item.price * quantity_sold;
 
-        // 2. Update garment stock
         await db.execute('UPDATE garments SET quantity = quantity - ? WHERE id = ?', [quantity_sold, item_id]);
 
-        // 3. Insert into sales table
         await db.execute(
             `INSERT INTO sales (item_id, quantity_sold, total, sale_date, payment_type, customer_name)
              VALUES (?, ?, ?, NOW(), ?, ?)`,
@@ -43,7 +39,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// ✅ Get all sales with item details
 router.get('/', async (req, res) => {
     try {
         const [sales] = await db.execute(`
@@ -68,7 +63,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// ✅ Route to get total number of sales orders
 router.get('/total-orders', async (req, res) => {
     try {
         const [result] = await db.query('SELECT COUNT(*) AS total FROM sales');
@@ -79,9 +73,9 @@ router.get('/total-orders', async (req, res) => {
     }
 });
 
-// routes/sales.js
+
 router.get('/search', async (req, res) => {
-    const { query } = req.query; // Getting the query parameter from the URL
+    const { query } = req.query;
 
     try {
         const [results] = await db.execute(`

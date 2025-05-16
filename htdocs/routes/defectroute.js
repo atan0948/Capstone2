@@ -1,4 +1,4 @@
-// Route: GET /api/defects/today
+
 app.get('/api/defects/today', async (req, res) => {
     const query = `SELECT COUNT(*) AS defectCount 
                    FROM garments 
